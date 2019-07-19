@@ -5,14 +5,18 @@ public class StaffSystem {
 	public static void main (String[] args)
 	{
 		Scanner input = new Scanner(System.in);
+		System.out.println("\tAIRLINE STAFF'SYSTEM\n");
 		
+		while(true)
+		{
 		System.out.println(
 		"[1] Add new contact\n" +
 		"[2] Edit contact\n" + 
 		"[3] Find contact\n" +
 		"[4] Assign a contact's flight\n" +
 		"[5] Cancel a contact's flight\n" +
-		"[6] View all available flights");
+		"[6] View all available flights\n" +
+		"[7] Quit");
 		
 		int choice = input.nextInt();
 		
@@ -101,7 +105,7 @@ public class StaffSystem {
 		} while(!correctInput);
 		
 		System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
-		+ age + "], Phone: [" + phone + "], Email: [" + email + "]");
+		+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
 				
 		break;
 		
@@ -210,9 +214,14 @@ public class StaffSystem {
 			} while(!correctInput);
 			
 			System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
-			+ age + "], Phone: [" + phone + "], Email: [" + email + "]");
+			+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
 					
-			break;			
+			break;
+		
+		case 7: System.out.println("Exiting Application...");
+				System.exit(0);
+				break;
+		}
 		}
 	}
 }
