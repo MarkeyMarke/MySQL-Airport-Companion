@@ -217,6 +217,61 @@ public class StaffSystem {
 			+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
 					
 			break;
+			
+		case 3: 
+			
+			//Testing purpose
+			List<Customer> test = new ArrayList<Customer>();
+			test.add(new Customer("aaa", "aaa", "1", "123", "3123124", "dasda@dadhad.com"));
+			test.add(new Customer("bbb", "ccc", "2", "345", "3213123", "dasda@dadhad.com"));
+			test.add(new Customer("aaa", "aaa", "3", "678", "5363643", "dasda@dadhad.com"));
+			
+			do {
+				correctInput = true;
+				try {
+						System.out.println("Enter first name: ");
+						fName = input.next();
+						if(!fName.matches("[a-zA-Z_]+"))
+							throw new Exception();
+					}
+					catch(Exception e)
+					{
+						System.out.println("Invalid first name. Please re-enter first name.");
+						correctInput = false;
+					}
+			} while(!correctInput);
+			
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter last name: ");
+					lName = input.next();
+					if(!lName.matches("[a-zA-Z_]+"))
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid last name. Please re-enter last name.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+			
+			//Testing purpose
+			int yes = 0;
+			for(Customer c: test)
+			{
+				if(fName.equals(c.getfName())&&lName.equals(c.getlName()))
+						{
+							System.out.println("[ID: " + c.getContactId() + ", Age: " + c.getAge() + ", Phone: " + c.getPhone() + ", Email: " + c.getEmail() + "]");
+							yes = 1;
+						}
+			} 		
+			if(yes==0)
+			{
+				System.out.println("Cannot find the contact.\n");
+			}
+		
+			break;
 		
 		case 7: System.out.println("Exiting Application...");
 				System.exit(0);
