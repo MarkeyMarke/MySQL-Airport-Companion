@@ -17,6 +17,7 @@ public class StaffSystem {
 		int choice = input.nextInt();
 		
 		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
+		String contactId = null;
 		boolean correctInput;
 		
 		switch(choice)
@@ -104,6 +105,114 @@ public class StaffSystem {
 				
 		break;
 		
+		case 2:
+			String isExist = "1234";//testing purpose 
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter Contact ID: ");
+					contactId = input.next();
+					if(!contactId.matches("[0-9_]+"))
+						throw new Exception();
+					try {
+						System.out.println("Checking...");
+						if(!contactId.equals(isExist))//testing purpose, should be function call isExist(contactId)
+							throw new Exception();
+					}
+					catch(Exception e1)
+					{
+						System.out.println("ID does not exist.");
+						correctInput = false;
+					}
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid Contact ID. Please re-enter valid Contact ID.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+			
+			do {
+				correctInput = true;
+				try {
+						System.out.println("Enter new first name: ");
+						fName = input.next();
+						if(!fName.matches("[a-zA-Z_]+"))
+							throw new Exception();
+					}
+					catch(Exception e)
+					{
+						System.out.println("Invalid new first name. Please re-enter new first name.");
+						correctInput = false;
+					}
+			} while(!correctInput);
+			
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter new last name: ");
+					lName = input.next();
+					if(!lName.matches("[a-zA-Z_]+"))
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid new last name. Please re-enter new last name.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+					
+			do	{
+				correctInput = true;
+				try {
+					System.out.println("Enter new age: ");
+					age = input.next();
+					if(!age.matches("[0-9_]+"))
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid new age. Please re-enter an age.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+			
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter new phone number: ");
+					pNumber = input.next();
+					if(!pNumber.matches("[0-9_]+"))
+						throw new Exception();
+					else
+						phone = pNumber.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid new phone number. Please re-enter new phone number.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+					
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter new email: ");
+					email = input.next();
+					if(!email.matches( "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"))
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid new email. Please re-enter new email");
+					correctInput = false;
+				}
+			} while(!correctInput);
+			
+			System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
+			+ age + "], Phone: [" + phone + "], Email: [" + email + "]");
+					
+			break;			
 		}
 	}
 }
