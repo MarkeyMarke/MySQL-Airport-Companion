@@ -273,9 +273,81 @@ public class StaffSystem {
 		
 			break;
 		
-		case 5:	
+		case 4: 
 			String idExist = "1234";//testing purpose 
 			String flightExist = "5678";//testing purpose
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter Contact ID: ");
+					contactId = input.next();
+					if(!contactId.matches("[0-9_]+"))
+						throw new Exception();
+					try {
+						System.out.println("Checking...");
+						if(!contactId.equals(idExist))//testing purpose, should be function call idExist(contactId)
+							throw new Exception();
+					}
+					catch(Exception e1)
+					{
+						System.out.println("Contact ID does not exist.");
+						correctInput = false;
+					}
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid Contact ID. Please re-enter valid Contact ID.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+			
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter Flight ID: ");
+					flightId = input.next();
+					if(!flightId.matches("[0-9_]+"))
+						throw new Exception();
+					try {
+						System.out.println("Checking...");
+						if(!flightId.equals(flightExist))//testing purpose, should be function call flightExist(flightId)
+							throw new Exception();
+					}
+					catch(Exception e1)
+					{
+						System.out.println("Flight ID does not exist.");
+						correctInput = false;
+					}
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid FLight ID. Please re-enter valid FLight ID.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+			
+			do {
+				correctInput = true;
+				try {
+						System.out.println("Is passenger registered as first class? [T/F]");
+						String ans = input.next();
+						if(!ans.equalsIgnoreCase("T")&&!ans.equalsIgnoreCase("F"))
+							throw new Exception();
+					}
+					catch(Exception e)
+					{
+						System.out.println("Invalid. Please enter T/F.");
+						correctInput = false;
+					}
+			} while(!correctInput);
+			
+			System.out.println("Flight successfully assigned!\n");
+			
+			break;	
+		
+		case 5:	
+			idExist = "1234";//testing purpose 
+			flightExist = "5678";//testing purpose
 			do {
 				correctInput = true;
 				try {
