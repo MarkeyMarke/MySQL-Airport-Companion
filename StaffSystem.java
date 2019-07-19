@@ -21,7 +21,7 @@ public class StaffSystem {
 		int choice = input.nextInt();
 		
 		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
-		String contactId = null;
+		String contactId = null, flightId = null;
 		boolean correctInput;
 		
 		switch(choice)
@@ -272,6 +272,62 @@ public class StaffSystem {
 			}
 		
 			break;
+		
+		case 5:	
+			String idExist = "1234";//testing purpose 
+			String flightExist = "5678";//testing purpose
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter Contact ID: ");
+					contactId = input.next();
+					if(!contactId.matches("[0-9_]+"))
+						throw new Exception();
+					try {
+						System.out.println("Checking...");
+						if(!contactId.equals(idExist))//testing purpose, should be function call idExist(contactId)
+							throw new Exception();
+					}
+					catch(Exception e1)
+					{
+						System.out.println("Contact ID does not exist.");
+						correctInput = false;
+					}
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid Contact ID. Please re-enter valid Contact ID.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+			
+			do {
+				correctInput = true;
+				try {
+					System.out.println("Enter Flight ID: ");
+					flightId = input.next();
+					if(!flightId.matches("[0-9_]+"))
+						throw new Exception();
+					try {
+						System.out.println("Checking...");
+						if(!flightId.equals(flightExist))//testing purpose, should be function call flightExist(flightId)
+							throw new Exception();
+					}
+					catch(Exception e1)
+					{
+						System.out.println("Flight ID does not exist.");
+						correctInput = false;
+					}
+				}
+				catch(Exception e)
+				{
+					System.out.println("Invalid FLight ID. Please re-enter valid FLight ID.");
+					correctInput = false;
+				}
+			} while(!correctInput);
+			
+		System.out.println("Flight successfully cancelled!\n");	
+		break;	
 		
 		case 7: System.out.println("Exiting Application...");
 				System.exit(0);
