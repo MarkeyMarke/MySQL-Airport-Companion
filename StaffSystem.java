@@ -1,7 +1,9 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class StaffSystem {
-
+		
 	public static void main (String[] args)
 	{
 		Scanner input = new Scanner(System.in);
@@ -21,7 +23,7 @@ public class StaffSystem {
 		int choice = input.nextInt();
 		
 		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
-		String contactId = null, flightId = null;
+		String contactId = null, flightId = null, date = null;
 		boolean correctInput;
 		
 		switch(choice)
@@ -219,7 +221,6 @@ public class StaffSystem {
 			break;
 			
 		case 3: 
-			
 			//Testing purpose
 			List<Customer> test = new ArrayList<Customer>();
 			test.add(new Customer("aaa", "aaa", "1", "123", "3123124", "dasda@dadhad.com"));
@@ -270,7 +271,6 @@ public class StaffSystem {
 			{
 				System.out.println("Cannot find the contact.\n");
 			}
-		
 			break;
 		
 		case 4: 
@@ -401,10 +401,67 @@ public class StaffSystem {
 		System.out.println("Flight successfully cancelled!\n");	
 		break;	
 		
+		case 6:
+			//Testing purpose
+			List<Flights> available = new ArrayList<Flights>();
+			available.add(new Flights("123", "Eva", "San Francisco", "Taipei", "01/21/2019", "01/22/2019"));
+			available.add(new Flights("456", "Japan", "San Francisco", "Kyoto", "01/21/2019", "01/22/2019"));
+			available.add(new Flights("123", "Korean Air", "San Jose", "Seoul", "01/21/2019", "01/22/2019"));
+			
+			do {
+				correctInput = true;
+				try {
+						System.out.println("Enter date with format MM/DD/YYYY: ");
+						date = input.next();
+						if(!isValid(date))
+							throw new Exception();
+					}
+				catch(Exception e)
+					{
+						System.out.println("Invalid date. PLease re-enter the date.");
+						correctInput = false;
+					}
+			} while(!correctInput);
+			
+			//Testing purpose
+			yes = 0;
+			for(Flights f: available)
+			{
+				if(date.equals(f.getDeparture()))
+						{
+							System.out.println("[FlightID: " + f.getFlightId() + ", Airlines: " + f.getAirline() + ", From: " + f.getFrom() + ", To: " + f.getTo() 
+							+ ", Departure Date: " + f.getDeparture() + ", Arrival Date: " + f.getArrival() + "]");
+							yes = 1;
+						}
+			} 		
+			if(yes==0)
+			{
+				System.out.println("No available flights on the selected date.\n");
+			}
+			break;
+		
 		case 7: System.out.println("Exiting Application...");
 				System.exit(0);
 				break;
-		}
+		}	
 		}
 	}
+	
+public static boolean isValid(String date){
+		
+		if (date.trim().equals(""))
+		{
+		    return true;
+		}
+		else {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		sdf.setLenient(false);
+		
+		try {	
+		Date d = sdf.parse(date);	
+		} catch (ParseException e) {
+		return false;
+		}
+		return true;
+	} }
 }
