@@ -23,7 +23,8 @@ public class StaffSystem {
 		int choice = input.nextInt();
 
 		//TODO: Turn every case into a method
-		//TODO: Turn these variables into local variables
+		//TODO: Turn these variables into local variable
+		//TODO: Turn age and id into an int
 		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
 		String contactId = null, flightId = null, date = null;
 		boolean correctInput;
@@ -224,12 +225,7 @@ public class StaffSystem {
 					
 			break;
 			
-		case 3: 
-			//Testing purpose
-			List<Customer> test = new ArrayList<Customer>();
-			test.add(new Customer("aaa", "aaa", "1", "123", "3123124", "dasda@dadhad.com"));
-			test.add(new Customer("bbb", "ccc", "2", "345", "3213123", "dasda@dadhad.com"));
-			test.add(new Customer("aaa", "aaa", "3", "678", "5363643", "dasda@dadhad.com"));
+		case 3:
 			
 			do {
 				correctInput = true;
@@ -262,19 +258,18 @@ public class StaffSystem {
 			} while(!correctInput);
 			
 			//Testing purpose
-			int yes = 0;
-			for(Customer c: test)
-			{
-				if(fName.equals(c.getfName())&&lName.equals(c.getlName()))
-						{
-							System.out.println("[ID: " + c.getContactId() + ", Age: " + c.getAge() + ", Phone: " + c.getPhone() + ", Email: " + c.getEmail() + "]");
-							yes = 1;
-						}
-			} 		
-			if(yes==0)
+			ArrayList<Customer> matchingCustomers = AirportJDBC.selectPersons(fName,lName);
+			if(matchingCustomers == null || matchingCustomers.isEmpty())
 			{
 				System.out.println("Cannot find the contact.\n");
 			}
+			else
+			{
+				for(Customer c: matchingCustomers) {
+					System.out.println("[ID: " + c.getContactId() + ", Age: " + c.getAge() + ", Phone: " + c.getPhone() + ", Email: " + c.getEmail() + "]");
+				}
+			}
+
 			break;
 		
 		case 4: 
@@ -428,7 +423,7 @@ public class StaffSystem {
 			} while(!correctInput);
 			
 			//Testing purpose
-			yes = 0;
+			int yes = 0;
 			for(Flights f: available)
 			{
 				if(date.equals(f.getDeparture()))

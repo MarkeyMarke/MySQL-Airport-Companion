@@ -59,4 +59,40 @@ public class AirportJDBC {
             e.printStackTrace();
         }
     }
+
+    public static ArrayList<Customer> selectPersons(String firstName, String lastName)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return null;
+
+        ArrayList<Customer> persons = new ArrayList<>();
+
+        String query = String.format("SELECT *\n" +
+                "FROM Person\n" +
+                "WHERE pFirst = '%s' AND pLast = '%s';",firstName,lastName);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next())
+            {
+                String id = Integer.toString(rs.getInt("pID"));
+                String fname = rs.getString("pFirst");
+                String lname = rs.getString("pLast");
+                String age = Integer.toString(rs.getInt("pAge"));
+                String phoneNum = rs.getString("phoneNum");
+                String email = rs.getString("email");
+                persons.add(new Customer(fname,lname,age,id,phoneNum,email));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return null;
+        }
+
+        return persons;
+    }
 }
