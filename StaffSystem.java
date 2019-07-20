@@ -21,7 +21,9 @@ public class StaffSystem {
 		"[7] Quit");
 		
 		int choice = input.nextInt();
-		
+
+		//TODO: Turn every case into a method
+		//TODO: Turn these variables into local variables
 		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
 		String contactId = null, flightId = null, date = null;
 		boolean correctInput;
@@ -105,14 +107,15 @@ public class StaffSystem {
 				correctInput = false;
 			}
 		} while(!correctInput);
-		
+
+		AirportJDBC.insertPerson(fName,lName,Integer.parseInt(age),phone,email);
 		System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
 		+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
 				
 		break;
 		
 		case 2:
-			String isExist = "1234";//testing purpose 
+			String isExist = "1000";//testing purpose
 			do {
 				correctInput = true;
 				try {
@@ -214,8 +217,9 @@ public class StaffSystem {
 					correctInput = false;
 				}
 			} while(!correctInput);
-			
-			System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
+
+			AirportJDBC.updatePerson(Integer.parseInt(contactId),fName,lName,Integer.parseInt(age),phone,email);
+			System.out.println("Contact [" + fName + ", " + lName + "] successfully updated with Age: ["
 			+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
 					
 			break;
@@ -404,14 +408,14 @@ public class StaffSystem {
 		case 6:
 			//Testing purpose
 			List<Flights> available = new ArrayList<Flights>();
-			available.add(new Flights("123", "Eva", "San Francisco", "Taipei", "01/21/2019", "01/22/2019"));
-			available.add(new Flights("456", "Japan", "San Francisco", "Kyoto", "01/21/2019", "01/22/2019"));
-			available.add(new Flights("123", "Korean Air", "San Jose", "Seoul", "01/21/2019", "01/22/2019"));
+			available.add(new Flights("123", "Eva", "San Francisco", "Taipei", "2019-01-21", "2019-01-22"));
+			available.add(new Flights("456", "Japan", "San Francisco", "Kyoto", "2019-01-21", "2019-01-22"));
+			available.add(new Flights("123", "Korean Air", "San Jose", "Seoul", "2019-01-21", "2019-01-22"));
 			
 			do {
 				correctInput = true;
 				try {
-						System.out.println("Enter date with format MM/DD/YYYY: ");
+						System.out.println("Enter date with format YYYY-MM-DD: ");
 						date = input.next();
 						if(!isValid(date))
 							throw new Exception();
@@ -447,14 +451,14 @@ public class StaffSystem {
 		}
 	}
 	
-public static boolean isValid(String date){
+private static boolean isValid(String date){
 		
 		if (date.trim().equals(""))
 		{
 		    return true;
 		}
 		else {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		sdf.setLenient(false);
 		
 		try {	
