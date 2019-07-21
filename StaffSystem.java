@@ -116,7 +116,6 @@ public class StaffSystem {
 		break;
 		
 		case 2:
-			String isExist = "1000";//testing purpose
 			do {
 				correctInput = true;
 				try {
@@ -126,7 +125,7 @@ public class StaffSystem {
 						throw new Exception();
 					try {
 						System.out.println("Checking...");
-						if(!contactId.equals(isExist))//testing purpose, should be function call isExist(contactId)
+						if(!AirportJDBC.checkCustomerExists(Integer.parseInt(contactId)))
 							throw new Exception();
 					}
 					catch(Exception e1)

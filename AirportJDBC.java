@@ -1,4 +1,6 @@
 import java.sql.*;
+
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.javatuples.*;
 import java.util.*;
 
@@ -94,5 +96,26 @@ public class AirportJDBC {
         }
 
         return persons;
+    }
+
+    public static boolean checkCustomerExists(int id)
+    {
+        ResultSet rs = null;
+        Connection connection = dbConnection();
+        if (connection == null)
+            return false;
+
+        try {
+            CallableStatement cs = connection.prepareCall("{CALL checkPersonExists(?,?)};");
+            cs.setInt("personID",id);
+            cs.registerOutParameter("personExists", Types.BOOLEAN);
+            boolean hasResult = cs.execute();
+            return cs.getBoolean("personExists");
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return false;
+        }
     }
 }
