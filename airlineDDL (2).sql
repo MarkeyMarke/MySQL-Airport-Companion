@@ -393,7 +393,7 @@ DROP PROCEDURE IF EXISTS checkPersonExists;
 DELIMITER //
 CREATE PROCEDURE checkPersonExists
 (
-	personID INT,
+	IN personID INT,
     OUT personExists BOOLEAN
 )
 BEGIN
