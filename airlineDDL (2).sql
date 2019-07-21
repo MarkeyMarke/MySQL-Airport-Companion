@@ -388,3 +388,17 @@ CREATE TABLE `ArchiveFlights` (
   CONSTRAINT `ArchiveFlights_ibfk_2` FOREIGN KEY (`departAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE,
   CONSTRAINT `ArchiveFlights_ibfk_3` FOREIGN KEY (`arriveAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP PROCEDURE IF EXISTS checkPersonExists;
+DELIMITER //
+CREATE PROCEDURE checkPersonExists
+(
+	personID INT,
+    OUT personExists BOOLEAN
+)
+BEGIN
+	SELECT COUNT(*) > 0
+    INTO personExists
+    FROM Person
+    WHERE pID = personID;
+END//
