@@ -98,7 +98,7 @@ CREATE TABLE `Airport` (
   `locID` int(11) NOT NULL,
   PRIMARY KEY (`idAirport`),
   KEY `locID` (`locID`),
-  CONSTRAINT `Airport_ibfk_1` FOREIGN KEY (`locID`) REFERENCES `Locations` (`locID`)
+  CONSTRAINT `Airport_ibfk_1` FOREIGN KEY (`locID`) REFERENCES `Locations` (`locID`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `Airport` (`idAirport`, `name`, `locID`) VALUES (1, ' Deadhorse', 1041);
@@ -216,8 +216,8 @@ CREATE TABLE `Plane` (
   PRIMARY KEY (`planeID`),
   KEY `idAirline` (`idAirline`),
   KEY `idModel` (`idModel`),
-  CONSTRAINT `Plane_ibfk_1` FOREIGN KEY (`idAirline`) REFERENCES `Airline` (`idAirline`),
-  CONSTRAINT `Plane_ibfk_2` FOREIGN KEY (`idModel`) REFERENCES `PlaneModel` (`idModel`)
+  CONSTRAINT `Plane_ibfk_1` FOREIGN KEY (`idAirline`) REFERENCES `Airline` (`idAirline`) ON DELETE CASCADE,
+  CONSTRAINT `Plane_ibfk_2` FOREIGN KEY (`idModel`) REFERENCES `PlaneModel` (`idModel`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1050 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `Plane` (`planeID`, `idAirline`, `idModel`) VALUES (1000, 3, 1002);
@@ -289,9 +289,9 @@ CREATE TABLE `Flight` (
   KEY `planeID` (`planeID`),
   KEY `departAirportID` (`departAirportID`),
   KEY `arriveAirportID` (`arriveAirportID`),
-  CONSTRAINT `Flight_ibfk_1` FOREIGN KEY (`planeID`) REFERENCES `Plane` (`planeID`),
-  CONSTRAINT `Flight_ibfk_2` FOREIGN KEY (`departAirportID`) REFERENCES `Airport` (`idAirport`),
-  CONSTRAINT `Flight_ibfk_3` FOREIGN KEY (`arriveAirportID`) REFERENCES `Airport` (`idAirport`)
+  CONSTRAINT `Flight_ibfk_1` FOREIGN KEY (`planeID`) REFERENCES `Plane` (`planeID`) ON DELETE CASCADE,
+  CONSTRAINT `Flight_ibfk_2` FOREIGN KEY (`departAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE,
+  CONSTRAINT `Flight_ibfk_3` FOREIGN KEY (`arriveAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1050 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1000, 1011, 14, 16, '1998-06-07', '2014-03-26', 19);
@@ -357,8 +357,8 @@ CREATE TABLE `Passenger` (
   `firstClass` tinyint(1) NOT NULL,
   PRIMARY KEY (`flightID`,`pID`),
   KEY `pID` (`pID`),
-  CONSTRAINT `Passenger_ibfk_1` FOREIGN KEY (`flightID`) REFERENCES `Flight` (`flightID`),
-  CONSTRAINT `Passenger_ibfk_2` FOREIGN KEY (`pID`) REFERENCES `Person` (`pID`)
+  CONSTRAINT `Passenger_ibfk_1` FOREIGN KEY (`flightID`) REFERENCES `Flight` (`flightID`) ON DELETE CASCADE,
+  CONSTRAINT `Passenger_ibfk_2` FOREIGN KEY (`pID`) REFERENCES `Person` (`pID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -382,9 +382,9 @@ CREATE TABLE `ArchiveFlights` (
   KEY `planeID` (`planeID`),
   KEY `departAirportID` (`departAirportID`),
   KEY `arriveAirportID` (`arriveAirportID`),
-  CONSTRAINT `ArchiveFlights_ibfk_1` FOREIGN KEY (`planeID`) REFERENCES `Plane` (`planeID`),
-  CONSTRAINT `ArchiveFlights_ibfk_2` FOREIGN KEY (`departAirportID`) REFERENCES `Airport` (`idAirport`),
-  CONSTRAINT `ArchiveFlights_ibfk_3` FOREIGN KEY (`arriveAirportID`) REFERENCES `Airport` (`idAirport`)
+  CONSTRAINT `ArchiveFlights_ibfk_1` FOREIGN KEY (`planeID`) REFERENCES `Plane` (`planeID`) ON DELETE CASCADE,
+  CONSTRAINT `ArchiveFlights_ibfk_2` FOREIGN KEY (`departAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE,
+  CONSTRAINT `ArchiveFlights_ibfk_3` FOREIGN KEY (`arriveAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
