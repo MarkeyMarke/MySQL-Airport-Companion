@@ -284,66 +284,68 @@ CREATE TABLE `Flight` (
   `arriveAirportID` int(11) NOT NULL,
   `departDate` date NOT NULL,
   `arriveDate` date NOT NULL,
-  `totalPassengers` int(11) DEFAULT 0,
+  `totalPassengers` int(11) DEFAULT 0 CHECK (totalPassengers >=  0),
   PRIMARY KEY (`flightID`),
   KEY `planeID` (`planeID`),
   KEY `departAirportID` (`departAirportID`),
   KEY `arriveAirportID` (`arriveAirportID`),
   CONSTRAINT `Flight_ibfk_1` FOREIGN KEY (`planeID`) REFERENCES `Plane` (`planeID`) ON DELETE CASCADE,
   CONSTRAINT `Flight_ibfk_2` FOREIGN KEY (`departAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE,
-  CONSTRAINT `Flight_ibfk_3` FOREIGN KEY (`arriveAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE
+  CONSTRAINT `Flight_ibfk_3` FOREIGN KEY (`arriveAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE,
+  CHECK(arriveDate > departDate),
+  CHECK(departAirportID <> arriveAirportID)
 ) ENGINE=InnoDB AUTO_INCREMENT=1050 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1000, 1011, 14, 16, '1998-06-07', '2014-03-26', 19);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1001, 1047, 4, 3, '1993-02-14', '1985-04-08', 37);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1002, 1003, 16, 8, '1991-09-25', '1993-12-14', 182);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1003, 1034, 13, 5, '1970-12-09', '2006-05-04', 155);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1004, 1020, 6, 10, '2011-12-05', '2006-07-16', 117);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1005, 1025, 9, 1, '1989-04-20', '2000-01-04', 29);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1006, 1002, 1, 6, '1980-04-24', '1977-07-25', 30);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1007, 1046, 15, 2, '2015-05-25', '1986-05-29', 150);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1008, 1015, 2, 13, '1983-09-14', '2015-02-08', 105);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1009, 1029, 4, 4, '2013-02-04', '1992-09-20', 45);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1010, 1027, 7, 2, '1971-09-15', '1980-08-23', 121);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1011, 1025, 7, 6, '2009-07-15', '1986-12-12', 51);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1012, 1033, 8, 5, '1975-11-30', '1975-11-12', 51);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1013, 1005, 3, 1, '1990-06-14', '1970-05-19', 99);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1014, 1019, 9, 6, '2005-11-08', '2017-10-17', 141);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1015, 1000, 2, 15, '1984-08-25', '1992-06-20', 87);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1016, 1000, 2, 15, '1979-10-12', '1990-08-02', 89);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1017, 1019, 1, 14, '2005-09-27', '2017-04-23', 49);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1018, 1022, 6, 15, '1991-01-13', '1981-08-20', 144);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1019, 1012, 16, 2, '1989-08-06', '1974-08-05', 167);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1020, 1023, 9, 9, '2001-03-29', '1990-04-02', 70);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1021, 1027, 1, 15, '2011-11-23', '1999-02-15', 152);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1022, 1043, 11, 7, '2008-07-06', '2006-05-21', 15);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1023, 1006, 13, 9, '2013-06-15', '2008-03-23', 20);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1024, 1007, 3, 2, '1974-07-07', '1991-10-16', 4);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1025, 1026, 3, 3, '1970-07-17', '1978-09-29', 50);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1026, 1021, 4, 5, '2018-01-06', '1994-04-03', 19);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1027, 1017, 10, 6, '2005-02-12', '1990-06-14', 140);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1028, 1008, 1, 12, '1972-08-23', '1988-10-21', 52);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1029, 1004, 5, 11, '1985-10-07', '2012-01-25', 109);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1030, 1009, 13, 3, '1974-05-27', '2013-10-20', 165);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1031, 1036, 5, 3, '1986-03-08', '1972-10-11', 35);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1032, 1032, 3, 14, '1970-07-20', '2009-01-27', 119);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1033, 1001, 6, 10, '1977-04-29', '2011-01-11', 40);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1034, 1028, 8, 13, '1987-05-11', '1990-09-20', 101);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1035, 1033, 1, 16, '1979-11-17', '1971-07-09', 140);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1036, 1042, 7, 3, '1971-09-02', '2012-05-18', 26);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1037, 1006, 13, 12, '1979-01-17', '1976-03-31', 150);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1038, 1023, 16, 13, '1972-08-03', '1990-12-19', 96);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1039, 1008, 1, 1, '2000-02-26', '1995-07-05', 85);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1040, 1040, 5, 13, '2014-05-14', '1985-01-17', 94);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1041, 1048, 16, 2, '2017-01-31', '1971-12-08', 63);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1042, 1005, 11, 5, '2018-01-24', '1978-08-10', 135);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1043, 1047, 11, 10, '1974-08-03', '1975-01-02', 158);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1044, 1028, 4, 2, '1985-01-08', '1992-10-05', 92);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1045, 1018, 15, 2, '1971-08-29', '1992-08-13', 148);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1046, 1016, 12, 9, '1995-01-07', '2005-12-02', 65);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1047, 1025, 15, 6, '1990-11-06', '1975-12-16', 127);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1048, 1011, 6, 5, '2014-06-09', '1997-01-19', 186);
-INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1049, 1000, 9, 6, '1974-05-13', '1985-05-13', 3);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1000, 1011, 14, 16, '1998-06-07', '2014-03-26', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1001, 1047, 4, 3, '1993-02-14', '1985-04-08', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1002, 1003, 16, 8, '1991-09-25', '1993-12-14', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1003, 1034, 13, 5, '1970-12-09', '2006-05-04', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1004, 1020, 6, 10, '2011-12-05', '2006-07-16', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1005, 1025, 9, 1, '1989-04-20', '2000-01-04', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1006, 1002, 1, 6, '1980-04-24', '1977-07-25', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1007, 1046, 15, 2, '2015-05-25', '1986-05-29', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1008, 1015, 2, 13, '1983-09-14', '2015-02-08', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1009, 1029, 4, 4, '2013-02-04', '1992-09-20', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1010, 1027, 7, 2, '1971-09-15', '1980-08-23', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1011, 1025, 7, 6, '2009-07-15', '1986-12-12', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1012, 1033, 8, 5, '1975-11-30', '1975-11-12', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1013, 1005, 3, 1, '1990-06-14', '1970-05-19', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1014, 1019, 9, 6, '2005-11-08', '2017-10-17', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1015, 1000, 2, 15, '1984-08-25', '1992-06-20', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1016, 1000, 2, 15, '1979-10-12', '1990-08-02', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1017, 1019, 1, 14, '2005-09-27', '2017-04-23', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1018, 1022, 6, 15, '1991-01-13', '1981-08-20', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1019, 1012, 16, 2, '1989-08-06', '1974-08-05', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1020, 1023, 9, 9, '2001-03-29', '1990-04-02', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1021, 1027, 1, 15, '2011-11-23', '1999-02-15', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1022, 1043, 11, 7, '2008-07-06', '2006-05-21', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1023, 1006, 13, 9, '2013-06-15', '2008-03-23', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1024, 1007, 3, 2, '1974-07-07', '1991-10-16', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1025, 1026, 3, 3, '1970-07-17', '1978-09-29', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1026, 1021, 4, 5, '2018-01-06', '1994-04-03', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1027, 1017, 10, 6, '2005-02-12', '1990-06-14', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1028, 1008, 1, 12, '1972-08-23', '1988-10-21', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1029, 1004, 5, 11, '1985-10-07', '2012-01-25', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1030, 1009, 13, 3, '1974-05-27', '2013-10-20', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1031, 1036, 5, 3, '1986-03-08', '1972-10-11', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1032, 1032, 3, 14, '1970-07-20', '2009-01-27', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1033, 1001, 6, 10, '1977-04-29', '2011-01-11', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1034, 1028, 8, 13, '1987-05-11', '1990-09-20', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1035, 1033, 1, 16, '1979-11-17', '1971-07-09', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1036, 1042, 7, 3, '1971-09-02', '2012-05-18', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1037, 1006, 13, 12, '1979-01-17', '1976-03-31', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1038, 1023, 16, 13, '1972-08-03', '1990-12-19', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1039, 1008, 1, 1, '2000-02-26', '1995-07-05', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1040, 1040, 5, 13, '2014-05-14', '1985-01-17', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1041, 1048, 16, 2, '2017-01-31', '1971-12-08', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1042, 1005, 11, 5, '2018-01-24', '1978-08-10', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1043, 1047, 11, 10, '1974-08-03', '1975-01-02', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1044, 1028, 4, 2, '1985-01-08', '1992-10-05', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1045, 1018, 15, 2, '1971-08-29', '1992-08-13', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1046, 1016, 12, 9, '1995-01-07', '2005-12-02', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1047, 1025, 15, 6, '1990-11-06', '1975-12-16', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1048, 1011, 6, 5, '2014-06-09', '1997-01-19', 0);
+INSERT INTO `Flight` (`flightID`, `planeID`, `departAirportID`, `arriveAirportID`, `departDate`, `arriveDate`, `totalPassengers`) VALUES (1049, 1000, 9, 6, '1974-05-13', '1985-05-13', 0);
 
 #
 # TABLE STRUCTURE FOR: Passenger
@@ -386,10 +388,3 @@ CREATE TABLE `ArchiveFlights` (
   CONSTRAINT `ArchiveFlights_ibfk_2` FOREIGN KEY (`departAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE,
   CONSTRAINT `ArchiveFlights_ibfk_3` FOREIGN KEY (`arriveAirportID`) REFERENCES `Airport` (`idAirport`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
-DELETE FROM Flight
-WHERE departAirportID = arriveAirportID OR departDate > arriveDate;
-
-UPDATE Flight
-SET totalPassengers = 0;
