@@ -21,7 +21,10 @@ public class StaffSystem {
 		"[7] Quit");
 		
 		int choice = input.nextInt();
-		
+
+		//TODO: Turn every case into a method
+		//TODO: Turn these variables into local variable
+		//TODO: Turn age and id into an int
 		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
 		String contactId = null, flightId = null, date = null;
 		boolean correctInput;
@@ -105,14 +108,14 @@ public class StaffSystem {
 				correctInput = false;
 			}
 		} while(!correctInput);
-		
+
+		AirportJDBC.insertPerson(fName,lName,Integer.parseInt(age),phone,email);
 		System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
 		+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
 				
 		break;
 		
 		case 2:
-			String isExist = "1234";//testing purpose 
 			do {
 				correctInput = true;
 				try {
@@ -122,7 +125,7 @@ public class StaffSystem {
 						throw new Exception();
 					try {
 						System.out.println("Checking...");
-						if(!contactId.equals(isExist))//testing purpose, should be function call isExist(contactId)
+						if(!AirportJDBC.checkCustomerExists(Integer.parseInt(contactId)))
 							throw new Exception();
 					}
 					catch(Exception e1)
@@ -214,18 +217,14 @@ public class StaffSystem {
 					correctInput = false;
 				}
 			} while(!correctInput);
-			
-			System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
+
+			AirportJDBC.updatePerson(Integer.parseInt(contactId),fName,lName,Integer.parseInt(age),phone,email);
+			System.out.println("Contact [" + fName + ", " + lName + "] successfully updated with Age: ["
 			+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
 					
 			break;
 			
-		case 3: 
-			//Testing purpose
-			List<Customer> test = new ArrayList<Customer>();
-			test.add(new Customer("aaa", "aaa", "1", "123", "3123124", "dasda@dadhad.com"));
-			test.add(new Customer("bbb", "ccc", "2", "345", "3213123", "dasda@dadhad.com"));
-			test.add(new Customer("aaa", "aaa", "3", "678", "5363643", "dasda@dadhad.com"));
+		case 3:
 			
 			do {
 				correctInput = true;
@@ -258,19 +257,18 @@ public class StaffSystem {
 			} while(!correctInput);
 			
 			//Testing purpose
-			int yes = 0;
-			for(Customer c: test)
-			{
-				if(fName.equals(c.getfName())&&lName.equals(c.getlName()))
-						{
-							System.out.println("[ID: " + c.getContactId() + ", Age: " + c.getAge() + ", Phone: " + c.getPhone() + ", Email: " + c.getEmail() + "]");
-							yes = 1;
-						}
-			} 		
-			if(yes==0)
+			ArrayList<Customer> matchingCustomers = AirportJDBC.selectPersons(fName,lName);
+			if(matchingCustomers == null || matchingCustomers.isEmpty())
 			{
 				System.out.println("Cannot find the contact.\n");
 			}
+			else
+			{
+				for(Customer c: matchingCustomers) {
+					System.out.println("[ID: " + c.getContactId() + ", Age: " + c.getAge() + ", Phone: " + c.getPhone() + ", Email: " + c.getEmail() + "]");
+				}
+			}
+
 			break;
 		
 		case 4: 
@@ -404,14 +402,14 @@ public class StaffSystem {
 		case 6:
 			//Testing purpose
 			List<Flights> available = new ArrayList<Flights>();
-			available.add(new Flights("123", "Eva", "San Francisco", "Taipei", "01/21/2019", "01/22/2019"));
-			available.add(new Flights("456", "Japan", "San Francisco", "Kyoto", "01/21/2019", "01/22/2019"));
-			available.add(new Flights("123", "Korean Air", "San Jose", "Seoul", "01/21/2019", "01/22/2019"));
+			available.add(new Flights("123", "Eva", "San Francisco", "Taipei", "2019-01-21", "2019-01-22"));
+			available.add(new Flights("456", "Japan", "San Francisco", "Kyoto", "2019-01-21", "2019-01-22"));
+			available.add(new Flights("123", "Korean Air", "San Jose", "Seoul", "2019-01-21", "2019-01-22"));
 			
 			do {
 				correctInput = true;
 				try {
-						System.out.println("Enter date with format MM/DD/YYYY: ");
+						System.out.println("Enter date with format YYYY-MM-DD: ");
 						date = input.next();
 						if(!isValid(date))
 							throw new Exception();
@@ -424,7 +422,7 @@ public class StaffSystem {
 			} while(!correctInput);
 			
 			//Testing purpose
-			yes = 0;
+			int yes = 0;
 			for(Flights f: available)
 			{
 				if(date.equals(f.getDeparture()))
@@ -447,14 +445,14 @@ public class StaffSystem {
 		}
 	}
 	
-public static boolean isValid(String date){
+private static boolean isValid(String date){
 		
 		if (date.trim().equals(""))
 		{
 		    return true;
 		}
 		else {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		sdf.setLenient(false);
 		
 		try {	
