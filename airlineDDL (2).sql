@@ -463,3 +463,4 @@ BEGIN
     DELETE FROM Flight
     WHERE arriveDate <= cutoff;
 END //
+DELIMITER ;
