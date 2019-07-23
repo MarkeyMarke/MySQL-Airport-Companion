@@ -356,6 +356,41 @@ public class AirportJDBC {
         }
     }
 
+    public static ArrayList<Quartet<String,String,String,String>> viewAirportLocations()
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return null;
+
+        ArrayList<Quartet<String,String,String,String>> airports = new ArrayList<>();
+
+        String query = "SELECT A.idAirport, A.name, loc.city, loc.country\n" +
+                "FROM Airport A, Locations loc\n" +
+                "WHERE A.locID = loc.locID;";
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next())
+            {
+                String aID = rs.getString("idAirport");
+                String name = rs.getString("name");
+                String city = rs.getString("city");
+                String country = rs.getString("country");
+                airports.add(Quartet.with(aID,name,city,country));
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return null;
+        }
+
+        return airports;
+    }
+
     public static void main(String[] args)
     {
         /*String date = "2000-01-01";
@@ -374,8 +409,16 @@ public class AirportJDBC {
             System.out.println(row);
         }*/
 
-        System.out.println(checkPlaneExists(1033));
-        System.out.println(checkAirportExists(7));
-        archiveFlights("2000-01-01");
+        System.out.println("Here are all the airports and their locations!");
+        ArrayList<Quartet<String,String,String,String>> airports = viewAirportLocations();
+        for(Quartet<String,String,String,String> airport : airports)
+        {
+            String id = airport.getValue0();
+            String name = airport.getValue1();
+            String city = airport.getValue2();
+            String country = airport.getValue3();
+            String row = String.format("ID: %s, name: %s, city: %s, country: %s",id,name,city,country);
+            System.out.println(row);
+        }
     }
 }
