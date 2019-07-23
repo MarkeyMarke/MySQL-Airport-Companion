@@ -448,3 +448,18 @@ BEGIN
     WHERE Airport.idAirport = aID;
 END//
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS archiveFlights;
+DELIMITER //
+CREATE PROCEDURE archiveFlights
+(
+	IN cutoff DATE
+)
+BEGIN
+	INSERT INTO ArchiveFlights
+    SELECT * FROM Flight
+    WHERE arriveDate <= cutoff;
+    
+    DELETE FROM Flight
+    WHERE arriveDate <= cutoff;
+END //
