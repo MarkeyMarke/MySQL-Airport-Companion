@@ -255,17 +255,16 @@ public class AirportJDBC {
         String query = String.format("SELECT\n" +
                 "\tflightID,\n" +
                 "\tplaneID,\n" +
-                "    CONCAT(A1.name, ', ', L1.city, ', ', L1.country) AS 'From', \n" +
-                "    CONCAT(A2.name, ', ', L2.city, ', ', L2.country) AS 'To',\n" +
+                "    A1.name AS 'From', \n" +
+                "    A2.name AS 'To',\n" +
                 "    departDate,\n" +
                 "    arriveDate,\n" +
                 "    totalPassengers\n" +
                 "FROM\n" +
-                "\tFlight, Airport A1, Airport A2, Locations L1, Locations L2\n" +
+                "\tFlight, Airport A1, Airport A2\n" +
                 "WHERE\n" +
                 "\tFlight.departAirportID = A1.idAirport AND\n" +
                 "    Flight.arriveAirportID = A2.idAirport AND\n" +
-                "    A1.locID = L1.locID AND A2.locID = L2.locID AND\n" +
                 "    departDate > '%s';",date);
 
         try {
