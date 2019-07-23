@@ -206,8 +206,48 @@ public class AirportJDBC {
         }
     }
 
+    public static void bookFlight(int fID, int pID, boolean firstClass)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return;
+
+        String query = String.format("INSERT INTO Passenger\n" +
+                "VALUES (%d, %d, %b);",fID,pID,firstClass);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(query);
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+        }
+    }
+
+    public static void cancelFlight(int flightID, int pID)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return;
+
+        String query = String.format("DELETE FROM Passenger\n" +
+                "WHERE flightID = %d AND pID = %d;",flightID, pID);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(query);
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args)
     {
-        deleteFlight(1049);
+        updateFlight(1003,1003,3,4,"2019-10-10","2019-01-01");
     }
 }
