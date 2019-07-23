@@ -418,3 +418,33 @@ BEGIN
     WHERE Flight.flightID = fID;
 END//
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS checkPlaneExists;
+DELIMITER //
+CREATE PROCEDURE checkPlaneExists
+(
+	IN pID INT,
+    OUT planeExists BOOLEAN
+)
+BEGIN
+	SELECT COUNT(*) > 0
+    INTO planeExists
+    FROM Plane
+    WHERE Plane.planeID = pID;
+END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS checkAirportExists;
+DELIMITER //
+CREATE PROCEDURE checkAirportExists
+(
+	IN aID INT,
+    OUT airportExists BOOLEAN
+)
+BEGIN
+	SELECT COUNT(*) > 0
+    INTO airportExists
+    FROM Airport
+    WHERE Airport.idAirport = aID;
+END//
+DELIMITER ;
