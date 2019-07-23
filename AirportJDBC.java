@@ -103,7 +103,6 @@ public class AirportJDBC {
 
     public static boolean checkCustomerExists(int id)
     {
-        ResultSet rs = null;
         Connection connection = dbConnection();
         if (connection == null)
             return false;
@@ -144,8 +143,30 @@ public class AirportJDBC {
         }
     }
 
+    public static boolean checkIfFlightExists(int flightID)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return false;
+
+        try {
+            CallableStatement cs = connection.prepareCall("{CALL checkFlightExists(?,?)};");
+            cs.setInt("fID",flightID);
+            cs.registerOutParameter("flightExists", Types.BOOLEAN);
+            cs.execute();
+            boolean flightExists = cs.getBoolean("flightExists");
+            connection.close();
+            return flightExists;
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void main(String[] args)
     {
-        insertFlight(1035,3,4,"2019-01-01", "2019-01-02");
+        System.out.println(checkIfFlightExists(1049));
     }
 }
