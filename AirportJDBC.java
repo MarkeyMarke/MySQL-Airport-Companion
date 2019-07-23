@@ -186,8 +186,28 @@ public class AirportJDBC {
         }
     }
 
+    public static void deleteFlight(int flightID)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return;
+
+        String query = String.format("DELETE FROM Flight\n" +
+                "WHERE flightID = %d;",flightID);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(query);
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args)
     {
-        updateFlight(1050, 1049,5,6,"2019-01-02","2019-03-04");
+        deleteFlight(1049);
     }
 }
