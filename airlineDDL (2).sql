@@ -402,3 +402,19 @@ BEGIN
     FROM Person
     WHERE pID = personID;
 END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS checkFlightExists;
+DELIMITER //
+CREATE PROCEDURE checkFlightExists
+(
+	IN fID INT,
+    OUT flightExists BOOLEAN
+)
+BEGIN
+	SELECT COUNT(*) > 0
+    INTO flightExists
+    FROM Flight
+    WHERE Flight.flightID = fID;
+END//
+DELIMITER ;
