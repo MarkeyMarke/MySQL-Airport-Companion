@@ -141,7 +141,7 @@ public class AirportJDBC {
         }
     }
 
-    public static boolean checkIfFlightExists(int flightID)
+    public static boolean checkFlightExists(int flightID)
     {
         Connection connection = dbConnection();
         if (connection == null)
@@ -293,9 +293,53 @@ public class AirportJDBC {
         return flights;
     }
 
+    public static boolean checkPlaneExists(int planeID)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return false;
+
+        try {
+            CallableStatement cs = connection.prepareCall("{CALL checkPlaneExists(?,?)};");
+            cs.setInt("pID",planeID);
+            cs.registerOutParameter("planeExists", Types.BOOLEAN);
+            cs.execute();
+            boolean planeExists = cs.getBoolean("planeExists");
+            connection.close();
+            return planeExists;
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean checkAirportExists(int airportID)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return false;
+
+        try {
+            CallableStatement cs = connection.prepareCall("{CALL checkAirportExists(?,?)};");
+            cs.setInt("aID",airportID);
+            cs.registerOutParameter("airportExists", Types.BOOLEAN);
+            cs.execute();
+            boolean planeExists = cs.getBoolean("airportExists");
+            connection.close();
+            return planeExists;
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void main(String[] args)
     {
-        String date = "2000-01-01";
+        /*String date = "2000-01-01";
         System.out.println("Here are the flights starting from " + date);
         ArrayList<Septet<String,String,String,String,String,String,String>> flights = viewAllFlightsFromDay(date);
         for(Septet<String,String,String,String,String,String,String> flight : flights)
@@ -309,6 +353,9 @@ public class AirportJDBC {
             String totalPass =flight.getValue6();
             String row = String.format("fID: %s, pID: %s, From: %s, To: %s, Depart: %s, Arrive: %s, Total Passengers: %s",fID,pID,from,to,depart,arrive,totalPass);
             System.out.println(row);
-        }
+        }*/
+
+        System.out.println(checkPlaneExists(1033));
+        System.out.println(checkAirportExists(7));
     }
 }
