@@ -35,6 +35,7 @@ public class AirportJDBC {
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(query);
+            connection.close();
 
         } catch (SQLException e) {
             System.out.println("Query Failed! Check output console");
@@ -55,6 +56,7 @@ public class AirportJDBC {
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(query);
+            connection.close();
 
         } catch (SQLException e) {
             System.out.println("Query Failed! Check output console");
@@ -88,6 +90,7 @@ public class AirportJDBC {
                 String email = rs.getString("email");
                 persons.add(new Customer(fname,lname,age,id,phoneNum,email));
             }
+            connection.close();
 
         } catch (SQLException e) {
             System.out.println("Query Failed! Check output console");
@@ -109,13 +112,40 @@ public class AirportJDBC {
             CallableStatement cs = connection.prepareCall("{CALL checkPersonExists(?,?)};");
             cs.setInt("personID",id);
             cs.registerOutParameter("personExists", Types.BOOLEAN);
-            boolean hasResult = cs.execute();
-            return cs.getBoolean("personExists");
+            cs.execute();
+            boolean personExists = cs.getBoolean("personExists");
+            connection.close();
+            return personExists;
 
         } catch (SQLException e) {
             System.out.println("Query Failed! Check output console");
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static void insertFlight(int planeID, int departAirportID , int arriveAirportID, String departure, String arrival)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return;
+
+        String query = String.format("INSERT INTO Flight\n" +
+                "VALUES (DEFAULT, %d, %d, %d, '%s', '%s', DEFAULT);",planeID,departAirportID,arriveAirportID,departure,arrival);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(query);
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args)
+    {
+        insertFlight(1035,3,4,"2019-01-01", "2019-01-02");
     }
 }
