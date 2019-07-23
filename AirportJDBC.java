@@ -1,6 +1,4 @@
 import java.sql.*;
-
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.javatuples.*;
 import java.util.*;
 
@@ -246,8 +244,72 @@ public class AirportJDBC {
         }
     }
 
+    public static ArrayList<Septet<String,String,String,String,String,String,String>> viewAllFlightsFromDay(String date)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return null;
+
+        ArrayList<Septet<String,String,String,String,String,String,String>> flights = new ArrayList<>();
+
+        String query = String.format("SELECT\n" +
+                "\tflightID,\n" +
+                "\tplaneID,\n" +
+                "    CONCAT(A1.name, ', ', L1.city, ', ', L1.country) AS 'From', \n" +
+                "    CONCAT(A2.name, ', ', L2.city, ', ', L2.country) AS 'To',\n" +
+                "    departDate,\n" +
+                "    arriveDate,\n" +
+                "    totalPassengers\n" +
+                "FROM\n" +
+                "\tFlight, Airport A1, Airport A2, Locations L1, Locations L2\n" +
+                "WHERE\n" +
+                "\tFlight.departAirportID = A1.idAirport AND\n" +
+                "    Flight.arriveAirportID = A2.idAirport AND\n" +
+                "    A1.locID = L1.locID AND A2.locID = L2.locID AND\n" +
+                "    departDate > '%s';",date);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next())
+            {
+                String fID = Integer.toString(rs.getInt("flightID"));
+                String pID = Integer.toString(rs.getInt("planeID"));
+                String from = rs.getString("From");
+                String to = rs.getString("To");
+                String departDate = rs.getString("departDate");
+                String arriveDate = rs.getString("arriveDate");
+                String totalPass = Integer.toString(rs.getInt("totalPassengers"));
+                flights.add(Septet.with(fID,pID,from,to,departDate,arriveDate,totalPass));
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return null;
+        }
+
+        return flights;
+    }
+
     public static void main(String[] args)
     {
-        updateFlight(1003,1003,3,4,"2019-10-10","2019-01-01");
+        String date = "2000-01-01";
+        System.out.println("Here are the flights starting from " + date);
+        ArrayList<Septet<String,String,String,String,String,String,String>> flights = viewAllFlightsFromDay(date);
+        for(Septet<String,String,String,String,String,String,String> flight : flights)
+        {
+            String fID = flight.getValue0();
+            String pID = flight.getValue1();
+            String from = flight.getValue2();
+            String to = flight.getValue3();
+            String depart = flight.getValue4();
+            String arrive = flight.getValue5();
+            String totalPass =flight.getValue6();
+            String row = String.format("fID: %s, pID: %s, From: %s, To: %s, Depart: %s, Arrive: %s, Total Passengers: %s",fID,pID,from,to,depart,arrive,totalPass);
+            System.out.println(row);
+        }
     }
 }
