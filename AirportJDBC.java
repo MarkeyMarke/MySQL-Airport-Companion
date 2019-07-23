@@ -337,6 +337,25 @@ public class AirportJDBC {
         }
     }
 
+    public static void archiveFlights(String date)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return;
+
+        try {
+            CallableStatement cs = connection.prepareCall("{CALL archiveFlights(?)};");
+            cs.setDate("cutoff", java.sql.Date.valueOf(date));
+            cs.execute();
+            connection.close();
+
+        } catch (Exception e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return;
+        }
+    }
+
     public static void main(String[] args)
     {
         /*String date = "2000-01-01";
@@ -357,5 +376,6 @@ public class AirportJDBC {
 
         System.out.println(checkPlaneExists(1033));
         System.out.println(checkAirportExists(7));
+        archiveFlights("2000-01-01");
     }
 }
