@@ -165,8 +165,29 @@ public class AirportJDBC {
         }
     }
 
+    public static void updateFlight(int flightID, int planeID, int departAirportID, int arriveAirportID, String departDate, String arriveDate)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return;
+
+        String query = String.format("UPDATE Flight\n" +
+                "SET planeID = %d, departAirportID = %d, arriveAirportID = %d, departDate = '%s', arriveDate = '%s'\n" +
+                "WHERE flightID = %d;",planeID,departAirportID,arriveAirportID,departDate,arriveDate,flightID);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(query);
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args)
     {
-        System.out.println(checkIfFlightExists(1049));
+        updateFlight(1050, 1049,5,6,"2019-01-02","2019-03-04");
     }
 }
