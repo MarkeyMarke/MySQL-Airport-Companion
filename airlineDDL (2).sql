@@ -464,3 +464,27 @@ BEGIN
     WHERE arriveDate <= cutoff;
 END //
 DELIMITER ;
+
+DROP TRIGGER IF EXISTS insertPassenger;
+DELIMITER //
+CREATE TRIGGER insertPassenger
+AFTER INSERT ON Passenger
+FOR EACH ROW
+BEGIN
+	UPDATE Flight
+    SET totalPassengers = totalPassengers + 1
+    WHERE NEW.flightID = Flight.flightID;
+END//
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS removePassenger;
+DELIMITER //
+CREATE TRIGGER removePassenger
+AFTER DELETE ON Passenger
+FOR EACH ROW
+BEGIN
+	UPDATE Flight
+	SET totalPassengers = totalPassengers - 1
+    WHERE OLD.flightID = Flight.flightID;
+END//
+DELIMITER ;
