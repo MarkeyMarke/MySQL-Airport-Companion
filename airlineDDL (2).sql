@@ -356,7 +356,7 @@ DROP TABLE IF EXISTS `Passenger`;
 CREATE TABLE `Passenger` (
   `flightID` int(11) NOT NULL,
   `pID` int(11) NOT NULL,
-  `firstClass` tinyint(1) NOT NULL,
+  `seatNumber` char(2) NOT NULL,
   PRIMARY KEY (`flightID`,`pID`),
   KEY `pID` (`pID`),
   CONSTRAINT `Passenger_ibfk_1` FOREIGN KEY (`flightID`) REFERENCES `Flight` (`flightID`) ON DELETE CASCADE,
@@ -462,6 +462,24 @@ BEGIN
     
     DELETE FROM Flight
     WHERE arriveDate <= cutoff;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS checkIfSeatIsTaken;
+DELIMITER //
+CREATE PROCEDURE checkIfSeatIsTaken
+(
+	IN seatNo char(2),
+    IN fID INT,
+    OUT seatTaken boolean
+)
+BEGIN
+	SELECT seatNo IN (
+		SELECT seatNumber
+        FROM Passenger
+        WHERE fID = flightID
+    )
+    INTO seatTaken;
 END //
 DELIMITER ;
 
