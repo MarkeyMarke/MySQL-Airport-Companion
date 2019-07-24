@@ -12,12 +12,12 @@ CREATE TABLE `Airline` (
   PRIMARY KEY (`idAirline`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (1, ' Frontier');
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (2, ' Virgin America');
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (3, ' Delta');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (1, 'Frontier');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (2, 'Virgin America');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (3, 'Delta');
 INSERT INTO `Airline` (`idAirline`, `name`) VALUES (4, 'Southwest');
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (5, ' JetBlue');
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (6, ' Hawaiian');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (5, 'JetBlue');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (6, 'Hawaiian');
 
 
 
@@ -402,3 +402,89 @@ BEGIN
     FROM Person
     WHERE pID = personID;
 END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS checkFlightExists;
+DELIMITER //
+CREATE PROCEDURE checkFlightExists
+(
+	IN fID INT,
+    OUT flightExists BOOLEAN
+)
+BEGIN
+	SELECT COUNT(*) > 0
+    INTO flightExists
+    FROM Flight
+    WHERE Flight.flightID = fID;
+END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS checkPlaneExists;
+DELIMITER //
+CREATE PROCEDURE checkPlaneExists
+(
+	IN pID INT,
+    OUT planeExists BOOLEAN
+)
+BEGIN
+	SELECT COUNT(*) > 0
+    INTO planeExists
+    FROM Plane
+    WHERE Plane.planeID = pID;
+END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS checkAirportExists;
+DELIMITER //
+CREATE PROCEDURE checkAirportExists
+(
+	IN aID INT,
+    OUT airportExists BOOLEAN
+)
+BEGIN
+	SELECT COUNT(*) > 0
+    INTO airportExists
+    FROM Airport
+    WHERE Airport.idAirport = aID;
+END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS archiveFlights;
+DELIMITER //
+CREATE PROCEDURE archiveFlights
+(
+	IN cutoff DATE
+)
+BEGIN
+	INSERT INTO ArchiveFlights
+    SELECT * FROM Flight
+    WHERE arriveDate <= cutoff;
+    
+    DELETE FROM Flight
+    WHERE arriveDate <= cutoff;
+END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS insertPassenger;
+DELIMITER //
+CREATE TRIGGER insertPassenger
+AFTER INSERT ON Passenger
+FOR EACH ROW
+BEGIN
+	UPDATE Flight
+    SET totalPassengers = totalPassengers + 1
+    WHERE NEW.flightID = Flight.flightID;
+END//
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS removePassenger;
+DELIMITER //
+CREATE TRIGGER removePassenger
+AFTER DELETE ON Passenger
+FOR EACH ROW
+BEGIN
+	UPDATE Flight
+	SET totalPassengers = totalPassengers - 1
+    WHERE OLD.flightID = Flight.flightID;
+END//
+DELIMITER ;
