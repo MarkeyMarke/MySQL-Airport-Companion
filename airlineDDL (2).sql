@@ -12,12 +12,12 @@ CREATE TABLE `Airline` (
   PRIMARY KEY (`idAirline`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (1, ' Frontier');
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (2, ' Virgin America');
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (3, ' Delta');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (1, 'Frontier');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (2, 'Virgin America');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (3, 'Delta');
 INSERT INTO `Airline` (`idAirline`, `name`) VALUES (4, 'Southwest');
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (5, ' JetBlue');
-INSERT INTO `Airline` (`idAirline`, `name`) VALUES (6, ' Hawaiian');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (5, 'JetBlue');
+INSERT INTO `Airline` (`idAirline`, `name`) VALUES (6, 'Hawaiian');
 
 
 
