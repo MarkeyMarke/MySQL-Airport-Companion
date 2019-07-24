@@ -483,6 +483,20 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS checkIfFlightFull;
+DELIMITER //
+CREATE PROCEDURE checkIfFlightFull
+(
+    IN fID INT,
+    OUT isFull boolean
+)
+BEGIN
+	SELECT totalPassengers = capacity INTO isFull
+	FROM Flight JOIN Plane USING(planeID) JOIN PlaneModel USING(idModel)
+	WHERE flightID = fID;
+END //
+DELIMITER ;
+
 DROP TRIGGER IF EXISTS insertPassenger;
 DELIMITER //
 CREATE TRIGGER insertPassenger
