@@ -580,6 +580,28 @@ public class AirportJDBC {
         }
     }
 
+    public static boolean checkIfFlightIsFull(int flightID)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return false;
+
+        try {
+            CallableStatement cs = connection.prepareCall("{CALL checkIfFlightFull(?,?)};");
+            cs.setInt("fID",flightID);
+            cs.registerOutParameter("isFull", Types.BOOLEAN);
+            cs.execute();
+            boolean flightExists = cs.getBoolean("isFull");
+            connection.close();
+            return flightExists;
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void main(String[] args)
     {
         /*String date = "2000-01-01";
@@ -663,6 +685,7 @@ public class AirportJDBC {
             String row = String.format("ID: %s, First: %s, Last: %s, Age: %s, Phone: %s, Email: %s, SeatNumber: %s",pID,first,last,age,phone,email,seatNumber);
             System.out.println(row);
         }*/
-        System.out.println(checkIfSeatTaken(1033,"A2"));
+        //System.out.println(checkIfSeatTaken(1033,"A2"));
+        System.out.println(checkIfFlightIsFull(1033));
     }
 }
