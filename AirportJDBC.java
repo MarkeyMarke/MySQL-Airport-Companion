@@ -204,14 +204,14 @@ public class AirportJDBC {
         }
     }
 
-    public static void bookFlight(int fID, int pID, boolean firstClass)
+    public static void bookFlight(int fID, int pID, String seatNumber)
     {
         Connection connection = dbConnection();
         if (connection == null)
             return;
 
         String query = String.format("INSERT INTO Passenger\n" +
-                "VALUES (%d, %d, %b);",fID,pID,firstClass);
+                "VALUES (%d, %d, '%s');",fID,pID,seatNumber);
 
         try {
             Statement stmt = connection.createStatement();
@@ -516,21 +516,22 @@ public class AirportJDBC {
         return airlines;
     }
 
-    public static ArrayList<Sextet<String,String,String,String,String,String>> viewAllCustomersInFlight(int flightID)
+    public static ArrayList<Septet<String,String,String,String,String,String,String>> viewAllCustomersInFlight(int flightID)
     {
         Connection connection = dbConnection();
         if (connection == null)
             return null;
 
-        ArrayList<Sextet<String,String,String,String,String,String>> customers = new ArrayList<>();
+        ArrayList<Septet<String,String,String,String,String,String,String>> customers = new ArrayList<>();
 
         String query = String.format("SELECT *\n" +
-                "FROM Person\n" +
+                "FROM Person P1 JOIN Passenger P2 USING(pID)\n" +
                 "WHERE pID IN (\n" +
                 "\tSELECT pID\n" +
                 "    FROM Passenger\n" +
                 "    WHERE flightID = %d\n" +
-                ");", flightID);
+                ")\n" +
+                "ORDER BY seatNumber;", flightID);
 
         try {
             Statement stmt = connection.createStatement();
@@ -543,7 +544,8 @@ public class AirportJDBC {
                 String age = Integer.toString(rs.getInt("pAge"));
                 String phoneNum = rs.getString("phoneNum");
                 String email = rs.getString("email");
-                customers.add(Sextet.with(id,first,last,age,phoneNum,email));
+                String seatNumber = rs.getString("seatNumber");
+                customers.add(Septet.with(id,first,last,age,phoneNum,email,seatNumber));
             }
             connection.close();
 
@@ -553,6 +555,29 @@ public class AirportJDBC {
             return null;
         }
         return customers;
+    }
+
+    public static boolean checkIfSeatTaken(int flightID, String seatNumber)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return false;
+
+        try {
+            CallableStatement cs = connection.prepareCall("{CALL checkIfSeatIsTaken(?,?,?)};");
+            cs.setInt("fID",flightID);
+            cs.setString("seatNo",seatNumber);
+            cs.registerOutParameter("seatTaken", Types.BOOLEAN);
+            cs.execute();
+            boolean flightExists = cs.getBoolean("seatTaken");
+            connection.close();
+            return flightExists;
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static void main(String[] args)
@@ -622,10 +647,11 @@ public class AirportJDBC {
         for (String name : airlines)
             System.out.println(name);*/
 
+        /*ookFlight(1033,1049, "A1");
         int flightID = 1033;
         System.out.println("Here is everyone from flight:  " + flightID);
-        ArrayList<Sextet<String,String,String,String,String,String>> people = viewAllCustomersInFlight(flightID);
-        for(Sextet<String,String,String,String,String,String> person : people)
+        ArrayList<Septet<String,String,String,String,String,String,String>> people = viewAllCustomersInFlight(flightID);
+        for(Septet<String,String,String,String,String,String,String> person : people)
         {
             String pID = person.getValue0();
             String first = person.getValue1();
@@ -633,9 +659,10 @@ public class AirportJDBC {
             String age = person.getValue3();
             String phone = person.getValue4();
             String email = person.getValue5();
-            String row = String.format("ID: %s, First: %s, Last: %s, Age: %s, Phone: %s, Email: %s",pID,first,last,age,phone,email);
+            String seatNumber = person.getValue6();
+            String row = String.format("ID: %s, First: %s, Last: %s, Age: %s, Phone: %s, Email: %s, SeatNumber: %s",pID,first,last,age,phone,email,seatNumber);
             System.out.println(row);
-        }
-
+        }*/
+        System.out.println(checkIfSeatTaken(1033,"A2"));
     }
 }
