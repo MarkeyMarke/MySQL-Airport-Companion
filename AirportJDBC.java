@@ -391,6 +391,170 @@ public class AirportJDBC {
         return airports;
     }
 
+    public static ArrayList<Septet<String,String,String,String,String,String,String>> viewAllFlightsFromToday()
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return null;
+
+        ArrayList<Septet<String,String,String,String,String,String,String>> flights = new ArrayList<>();
+
+        String query = "SELECT\n" +
+                "\tflightID,\n" +
+                "    Flight.planeID,\n" +
+                "    A1.name AS 'From',\n" +
+                "    A2.name AS 'To',\n" +
+                "    departDate,\n" +
+                "    arriveDate,\n" +
+                "    M.capacity - totalPassengers AS 'SeatsLeft'\n" +
+                "FROM Flight, Airport A1, Airport A2, Plane P, PlaneModel M\n" +
+                "WHERE\n" +
+                "\tFlight.departAirportID = A1.idAirport AND\n" +
+                "    Flight.arriveAirportID = A2.idAirport AND\n" +
+                "    Flight.planeID = P.planeID AND\n" +
+                "    P.idModel = M.idModel AND\n" +
+                "    departDate >= curdate();";
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next())
+            {
+                String fID = Integer.toString(rs.getInt("flightID"));
+                String pID = Integer.toString(rs.getInt("planeID"));
+                String from = rs.getString("From");
+                String to = rs.getString("To");
+                String departDate = rs.getString("departDate");
+                String arriveDate = rs.getString("arriveDate");
+                String seatsLeft = Integer.toString(rs.getInt("SeatsLeft"));
+                flights.add(Septet.with(fID,pID,from,to,departDate,arriveDate,seatsLeft));
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return null;
+        }
+
+        return flights;
+    }
+
+    public static ArrayList<Septet<String,String,String,String,String,String,String>> viewAllFlightFromAirline(String airline) {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return null;
+
+        ArrayList<Septet<String, String, String, String, String, String, String>> flights = new ArrayList<>();
+
+        String query = String.format("SELECT\n" +
+                "\tflightID,\n" +
+                "    Flight.planeID,\n" +
+                "    A1.name AS 'From',\n" +
+                "    A2.name AS 'To',\n" +
+                "    departDate,\n" +
+                "    arriveDate,\n" +
+                "    totalPassengers\n" +
+                "FROM Flight, Airport A1, Airport A2, Plane P, Airline AR\n" +
+                "WHERE\n" +
+                "\tFlight.departAirportID = A1.idAirport AND\n" +
+                "    Flight.arriveAirportID = A2.idAirport AND\n" +
+                "\tFlight.planeID = P.planeID AND\n" +
+                "    P.idAirline = AR.idAirline AND\n" +
+                "    AR.name = '%s';", airline);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next()) {
+                String fID = Integer.toString(rs.getInt("flightID"));
+                String pID = Integer.toString(rs.getInt("planeID"));
+                String from = rs.getString("From");
+                String to = rs.getString("To");
+                String departDate = rs.getString("departDate");
+                String arriveDate = rs.getString("arriveDate");
+                String totalPass = Integer.toString(rs.getInt("totalPassengers"));
+                flights.add(Septet.with(fID, pID, from, to, departDate, arriveDate, totalPass));
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return null;
+        }
+        return flights;
+    }
+
+    public static ArrayList<String> viewAllAirlines()
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return null;
+
+        ArrayList<String> airlines = new ArrayList<>();
+
+        String query = "SELECT name FROM Airline;";
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                airlines.add(name);
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return null;
+        }
+        return airlines;
+    }
+
+    public static ArrayList<Sextet<String,String,String,String,String,String>> viewAllCustomersInFlight(int flightID)
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return null;
+
+        ArrayList<Sextet<String,String,String,String,String,String>> customers = new ArrayList<>();
+
+        String query = String.format("SELECT *\n" +
+                "FROM Person\n" +
+                "WHERE pID IN (\n" +
+                "\tSELECT pID\n" +
+                "    FROM Passenger\n" +
+                "    WHERE flightID = %d\n" +
+                ");", flightID);
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next()) {
+                String id = rs.getString("pID");
+                String first = rs.getString("pFirst");
+                String last = rs.getString("pLast");
+                String age = Integer.toString(rs.getInt("pAge"));
+                String phoneNum = rs.getString("phoneNum");
+                String email = rs.getString("email");
+                customers.add(Sextet.with(id,first,last,age,phoneNum,email));
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return null;
+        }
+        return customers;
+    }
+
     public static void main(String[] args)
     {
         /*String date = "2000-01-01";
@@ -409,7 +573,7 @@ public class AirportJDBC {
             System.out.println(row);
         }*/
 
-        System.out.println("Here are all the airports and their locations!");
+        /*System.out.println("Here are all the airports and their locations!");
         ArrayList<Quartet<String,String,String,String>> airports = viewAirportLocations();
         for(Quartet<String,String,String,String> airport : airports)
         {
@@ -419,6 +583,59 @@ public class AirportJDBC {
             String country = airport.getValue3();
             String row = String.format("ID: %s, name: %s, city: %s, country: %s",id,name,city,country);
             System.out.println(row);
+        }*/
+
+        /*System.out.println("Here are the flights starting from today");
+        ArrayList<Septet<String,String,String,String,String,String,String>> flights = viewAllFlightsFromToday();
+        for(Septet<String,String,String,String,String,String,String> flight : flights)
+        {
+            String fID = flight.getValue0();
+            String pID = flight.getValue1();
+            String from = flight.getValue2();
+            String to = flight.getValue3();
+            String depart = flight.getValue4();
+            String arrive = flight.getValue5();
+            String seatsLeft  =flight.getValue6();
+            String row = String.format("fID: %s, pID: %s, From: %s, To: %s, Depart: %s, Arrive: %s, Seats Left: %s",fID,pID,from,to,depart,arrive,seatsLeft);
+            System.out.println(row);
+        }*/
+
+        /*String airline = "Frontier";
+        System.out.println("Here are the flights from " + airline + " airlines:");
+        ArrayList<Septet<String,String,String,String,String,String,String>> flights = viewAllFlightFromAirline(airline);
+        for(Septet<String,String,String,String,String,String,String> flight : flights)
+        {
+            String fID = flight.getValue0();
+            String pID = flight.getValue1();
+            String from = flight.getValue2();
+            String to = flight.getValue3();
+            String depart = flight.getValue4();
+            String arrive = flight.getValue5();
+            String totalPass =flight.getValue6();
+            String row = String.format("fID: %s, pID: %s, From: %s, To: %s, Depart: %s, Arrive: %s, Total Passengers: %s",fID,pID,from,to,depart,arrive,totalPass);
+            System.out.println(row);
+        }*/
+
+        /*
+        System.out.println("Here are all the airlines:");
+        ArrayList<String> airlines = viewAllAirlines();
+        for (String name : airlines)
+            System.out.println(name);*/
+
+        int flightID = 1033;
+        System.out.println("Here is everyone from flight:  " + flightID);
+        ArrayList<Sextet<String,String,String,String,String,String>> people = viewAllCustomersInFlight(flightID);
+        for(Sextet<String,String,String,String,String,String> person : people)
+        {
+            String pID = person.getValue0();
+            String first = person.getValue1();
+            String last = person.getValue2();
+            String age = person.getValue3();
+            String phone = person.getValue4();
+            String email = person.getValue5();
+            String row = String.format("ID: %s, First: %s, Last: %s, Age: %s, Phone: %s, Email: %s",pID,first,last,age,phone,email);
+            System.out.println(row);
         }
+
     }
 }
