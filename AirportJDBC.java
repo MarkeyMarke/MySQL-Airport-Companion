@@ -9,8 +9,8 @@ public class AirportJDBC {
         Connection connection;
         try {
             String dbURL = "jdbc:mysql://localhost:3306/AIRLINE_RESERVATION?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT";
-            String jdbcUser = "root";
-            String jdbcPass = "KenneTH1997";
+            String jdbcUser = "testingUser";//"root";
+            String jdbcPass = "customPassword";//"KenneTH1997";
             connection = DriverManager.getConnection(dbURL, jdbcUser, jdbcPass);
 
         } catch (SQLException e) {
@@ -569,9 +569,9 @@ public class AirportJDBC {
             cs.setString("seatNo",seatNumber);
             cs.registerOutParameter("seatTaken", Types.BOOLEAN);
             cs.execute();
-            boolean flightExists = cs.getBoolean("seatTaken");
+            boolean seatTaken = cs.getBoolean("seatTaken");
             connection.close();
-            return flightExists;
+            return seatTaken;
 
         } catch (SQLException e) {
             System.out.println("Query Failed! Check output console");
@@ -591,15 +591,48 @@ public class AirportJDBC {
             cs.setInt("fID",flightID);
             cs.registerOutParameter("isFull", Types.BOOLEAN);
             cs.execute();
-            boolean flightExists = cs.getBoolean("isFull");
+            boolean flightIsFull = cs.getBoolean("isFull");
             connection.close();
-            return flightExists;
+            return flightIsFull;
 
         } catch (SQLException e) {
             System.out.println("Query Failed! Check output console");
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static ArrayList<Quartet<String,String,String,String>> viewAllPlanes()
+    {
+        Connection connection = dbConnection();
+        if (connection == null)
+            return null;
+
+        ArrayList<Quartet<String,String,String,String>> airlines = new ArrayList<>();
+
+        String query = "SELECT planeID, PlaneModel.name AS Model, Airline.name AS Airline, capacity\n" +
+                "FROM Plane JOIN Airline USING(idAirline) JOIN PlaneModel USING(idModel)\n" +
+                "ORDER BY planeID;";
+
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next()) {
+                String planeID = Integer.toString(rs.getInt("planeID"));
+                String model = rs.getString("Model");
+                String airline = rs.getString("Airline");
+                String capacity = Integer.toString(rs.getInt("capacity"));
+                airlines.add(Quartet.with(planeID,model,airline,capacity));
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Query Failed! Check output console");
+            e.printStackTrace();
+            return null;
+        }
+        return airlines;
     }
 
     public static void main(String[] args)
@@ -686,6 +719,17 @@ public class AirportJDBC {
             System.out.println(row);
         }*/
         //System.out.println(checkIfSeatTaken(1033,"A2"));
-        System.out.println(checkIfFlightIsFull(1033));
+        //System.out.println(checkIfFlightIsFull(1033));
+
+        ArrayList<Quartet<String,String,String,String>> planes = viewAllPlanes();
+        for(Quartet<String,String,String,String> person : planes)
+        {
+            String planeID = person.getValue0();
+            String model = person.getValue1();
+            String airline = person.getValue2();
+            String capacity = person.getValue3();
+            String row = String.format("Plane: %s, Model: %s, Airline: %s, Capacity: %s",planeID,model,airline,capacity);
+            System.out.println(row);
+        }
     }
 }
