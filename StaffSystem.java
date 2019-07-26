@@ -36,9 +36,6 @@ public class StaffSystem {
 		
 		int choice = input.nextInt();
 
-		//TODO: Turn every case into a method
-		//TODO: Turn these variables into local variable
-		//TODO: Turn age and id into an int
 		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
 		String contactId = null, flightId = null, date = null;
 		boolean correctInput;
@@ -414,43 +411,8 @@ public class StaffSystem {
 		break;	
 		
 		case 6:
-			//Testing purpose
-			List<Flights> available = new ArrayList<Flights>();
-			available.add(new Flights("123", "Eva", "San Francisco", "Taipei", "2019-01-21", "2019-01-22"));
-			available.add(new Flights("456", "Japan", "San Francisco", "Kyoto", "2019-01-21", "2019-01-22"));
-			available.add(new Flights("123", "Korean Air", "San Jose", "Seoul", "2019-01-21", "2019-01-22"));
-			
-			do {
-				correctInput = true;
-				try {
-						System.out.println("Enter date with format YYYY-MM-DD: ");
-						date = input.next();
-						if(!isValid(date))
-							throw new Exception();
-					}
-				catch(Exception e)
-					{
-						System.out.println("Invalid date. PLease re-enter the date.");
-						correctInput = false;
-					}
-			} while(!correctInput);
-			
-			//Testing purpose
-			int yes = 0;
-			for(Flights f: available)
-			{
-				if(date.equals(f.getDeparture()))
-						{
-							System.out.println("[FlightID: " + f.getFlightId() + ", Airlines: " + f.getAirline() + ", From: " + f.getFrom() + ", To: " + f.getTo() 
-							+ ", Departure Date: " + f.getDeparture() + ", Arrival Date: " + f.getArrival() + "]");
-							yes = 1;
-						}
-			} 		
-			if(yes==0)
-			{
-				System.out.println("No available flights on the selected date.\n");
-			}
-			break;
+				deleteFlight();
+				break;
 		
 		case 7:
 				bookFlight();				
@@ -529,6 +491,42 @@ public class StaffSystem {
 		if(list.size()==0)
 			return true;
 		return false;
+	}
+	
+	public static void deleteFlight()
+	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String fID = null;
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter flight ID: ");
+				fID = input.next();
+				if(!fID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkFlightExists(Integer.parseInt(fID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Flight ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid flight ID. Please re-enter valid flight ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		System.out.println("Delete was successful.\n");
 	}
 
 	public static void bookFlight()
