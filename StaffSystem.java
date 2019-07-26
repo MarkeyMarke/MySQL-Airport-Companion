@@ -473,7 +473,7 @@ public class StaffSystem {
 				break;
 			
 		case 12:
-			
+				viewAllFlightsAvailableStartingTodayWithSeats();
 				break;
 			
 		case 13:
@@ -737,5 +737,24 @@ public class StaffSystem {
 			System.out.println("Airport: " + print.getValue0() +  "Name: " + print.getValue1() + 
 								"City: " + print.getValue2() + "Country: " + print.getValue3());
 		}
+	}
+	
+	public static void viewAllFlightsAvailableStartingTodayWithSeats()
+	{
+		 ArrayList<Septet<String,String,String,String,String,String,String>> flights = AirportJDBC.viewAllFlightsFromToday();
+		 if(isEmpty(flights))
+		    {
+		    	System.out.println("There is no flights starting from today yet.\n");
+		    }
+		    else 
+		    {
+		    	for(Septet<String, String, String, String, String, String, String> print : flights)
+				{
+					System.out.println("FlightID: " + print.getValue0() +  "PlaneID: " + print.getValue1() + 
+									   "From: " + print.getValue2() +"To: " + print.getValue3() + 
+									   "Departure: " + print.getValue4() + "Arrival: " + print.getValue5() + 
+									   "Remaining Seats: " + print.getValue6());
+				}
+		    }
 	}
 }
