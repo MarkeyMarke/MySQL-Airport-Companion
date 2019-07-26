@@ -462,7 +462,7 @@ public class StaffSystem {
 				break;
 				
 		case 10:
-			
+				archiveFlights();
 				break;
 				
 		case 11:
@@ -497,7 +497,8 @@ public class StaffSystem {
 		}
 	}
 	
-private static boolean isValid(String date){
+	private static boolean isValid(String date)
+	{
 		
 		if (date.trim().equals(""))
 		{
@@ -513,7 +514,8 @@ private static boolean isValid(String date){
 		return false;
 		}
 		return true;
-	} }
+	} 
+	}
 
 	public static void bookFlight()
 	{
@@ -640,7 +642,34 @@ private static boolean isValid(String date){
 		} 
 		while(!userInput);
 		
-		System.out.println("Flight successflly unbooked");
-		input.close();
+		System.out.println("Flight successflly unbooked\n");
+	}
+	
+	public static void archiveFlights()
+	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String date = null;
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter date with format YYYY-MM-DD: ");
+				date = input.next();
+				if(!isValid(date))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid date. PLease re-enter the date.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		AirportJDBC.archiveFlights(date);
+		System.out.println("Archiving was a success\n");
 	}
 }
