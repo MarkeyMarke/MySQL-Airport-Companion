@@ -489,7 +489,7 @@ public class StaffSystem {
 				break;
 			
 		case 16:
-			
+				viewAllPlanesAndTheirSpecs();
 				break;
 		
 		case 17: 
@@ -857,5 +857,15 @@ public class StaffSystem {
 			}
 		    System.out.println("\n");
 		}	
+	}
+	
+	public static void viewAllPlanesAndTheirSpecs()
+	{
+		ArrayList<Quartet<String,String,String,String>> planes = AirportJDBC.viewAllPlanes();
+		for(Quartet<String, String, String, String> print : planes)
+		{
+			System.out.println("PlaneID: " + print.getValue0() +  " Model: " + print.getValue1() + 
+							   " Airline: " + print.getValue2() +" Capacity: " + print.getValue3());
+		}
 	}
 }
