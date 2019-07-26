@@ -5,7 +5,8 @@ import java.util.*;
 import org.javatuples.Quartet;
 import org.javatuples.Septet;
 
-public class StaffSystem {
+public class StaffSystem 
+{
 		
 	public static void main (String[] args)
 	{
@@ -14,27 +15,26 @@ public class StaffSystem {
 		
 		while(true)
 		{
-		System.out.println(
-		"[1]  Add customer\n" +
-		"[2]  Edit cusomer information\n" + 
-		"[3]  Find customers by name\n" +
-		"[4]  Add flight\n" +
-		"[5]  Edit flight\n" +
-		"[6]  Delete flight\n" +
-		"[7]  Book flight\n" +
-		"[8]  Cancel flight\n" +
-		"[9]  View all flights starting from a particular day\n" +
-		"[10] Archive flights\n" + 
-		"[11] View list of airtport locations\n" +
-		"[12] View all flights available starting today and how many seats are left\n" +
-		"[13] View all flight from a particular airline\n" +
-		"[14] View all currently active airlines\n" +
-		"[15] View the passengers of a certain flight\n" +
-		"[16] View all planes and their specs\n" +
-		"[17] Exit application");
-		
-		
-		int choice = input.nextInt();
+			System.out.println(
+			"[1]  Add customer\n" +
+			"[2]  Edit cusomer information\n" + 
+			"[3]  Find customers by name\n" +
+			"[4]  Add flight\n" +
+			"[5]  Edit flight\n" +
+			"[6]  Delete flight\n" +
+			"[7]  Book flight\n" +
+			"[8]  Cancel flight\n" +
+			"[9]  View all flights starting from a particular day\n" +
+			"[10] Archive flights\n" + 
+			"[11] View list of airtport locations\n" +
+			"[12] View all flights available starting today and how many seats are left\n" +
+			"[13] View all flight from a particular airline\n" +
+			"[14] View all currently active airlines\n" +
+			"[15] View the passengers of a certain flight\n" +
+			"[16] View all planes and their specs\n" +
+			"[17] Exit application");
+			
+			int choice = input.nextInt();
 
 		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
 		String contactId = null, flightId = null, date = null;
@@ -283,132 +283,12 @@ public class StaffSystem {
 			break;
 		
 		case 4: 
-			String idExist = "1234";//testing purpose 
-			String flightExist = "5678";//testing purpose
-			do {
-				correctInput = true;
-				try {
-					System.out.println("Enter Contact ID: ");
-					contactId = input.next();
-					if(!contactId.matches("[0-9_]+"))
-						throw new Exception();
-					try {
-						System.out.println("Checking...");
-						if(!contactId.equals(idExist))//testing purpose, should be function call idExist(contactId)
-							throw new Exception();
-					}
-					catch(Exception e1)
-					{
-						System.out.println("Contact ID does not exist.");
-						correctInput = false;
-					}
-				}
-				catch(Exception e)
-				{
-					System.out.println("Invalid Contact ID. Please re-enter valid Contact ID.");
-					correctInput = false;
-				}
-			} while(!correctInput);
-			
-			do {
-				correctInput = true;
-				try {
-					System.out.println("Enter Flight ID: ");
-					flightId = input.next();
-					if(!flightId.matches("[0-9_]+"))
-						throw new Exception();
-					try {
-						System.out.println("Checking...");
-						if(!flightId.equals(flightExist))//testing purpose, should be function call flightExist(flightId)
-							throw new Exception();
-					}
-					catch(Exception e1)
-					{
-						System.out.println("Flight ID does not exist.");
-						correctInput = false;
-					}
-				}
-				catch(Exception e)
-				{
-					System.out.println("Invalid FLight ID. Please re-enter valid FLight ID.");
-					correctInput = false;
-				}
-			} while(!correctInput);
-			
-			do {
-				correctInput = true;
-				try {
-						System.out.println("Is passenger registered as first class? [T/F]");
-						String ans = input.next();
-						if(!ans.equalsIgnoreCase("T")&&!ans.equalsIgnoreCase("F"))
-							throw new Exception();
-					}
-					catch(Exception e)
-					{
-						System.out.println("Invalid. Please enter T/F.");
-						correctInput = false;
-					}
-			} while(!correctInput);
-			
-			System.out.println("Flight successfully assigned!\n");
-			
-			break;	
-		
+				
+				break;
+				
 		case 5:	
-			idExist = "1234";//testing purpose 
-			flightExist = "5678";//testing purpose
-			do {
-				correctInput = true;
-				try {
-					System.out.println("Enter Contact ID: ");
-					contactId = input.next();
-					if(!contactId.matches("[0-9_]+"))
-						throw new Exception();
-					try {
-						System.out.println("Checking...");
-						if(!contactId.equals(idExist))//testing purpose, should be function call idExist(contactId)
-							throw new Exception();
-					}
-					catch(Exception e1)
-					{
-						System.out.println("Contact ID does not exist.");
-						correctInput = false;
-					}
-				}
-				catch(Exception e)
-				{
-					System.out.println("Invalid Contact ID. Please re-enter valid Contact ID.");
-					correctInput = false;
-				}
-			} while(!correctInput);
-			
-			do {
-				correctInput = true;
-				try {
-					System.out.println("Enter Flight ID: ");
-					flightId = input.next();
-					if(!flightId.matches("[0-9_]+"))
-						throw new Exception();
-					try {
-						System.out.println("Checking...");
-						if(!flightId.equals(flightExist))//testing purpose, should be function call flightExist(flightId)
-							throw new Exception();
-					}
-					catch(Exception e1)
-					{
-						System.out.println("Flight ID does not exist.");
-						correctInput = false;
-					}
-				}
-				catch(Exception e)
-				{
-					System.out.println("Invalid FLight ID. Please re-enter valid FLight ID.");
-					correctInput = false;
-				}
-			} while(!correctInput);
-			
-		System.out.println("Flight successfully cancelled!\n");	
-		break;	
+				
+				break;	
 		
 		case 6:
 				deleteFlight();
@@ -493,6 +373,313 @@ public class StaffSystem {
 		return false;
 	}
 	
+	public static void addCustomer()
+	{
+		
+	}
+	
+	public static void editCustomerInformation()
+	{
+		
+	}
+	
+	public static void findCustomerByName()
+	{
+		
+	}
+	
+	public static void addFlight()
+	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String pID = null, dID = null, aID = null, dDate = null, aDate = null;
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter plane ID: ");
+				pID = input.next();
+				if(!pID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkPlaneExists(Integer.parseInt(pID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Plane ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid plane ID. Please re-enter valid plane ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Departing airport ID: ");
+				dID = input.next();
+				if(!dID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkAirportExists(Integer.parseInt(dID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Airport ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid departing ID. Please re-enter valid departing ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		//need to handle if same day 
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Arriving airport ID: ");
+				aID = input.next();
+				if(!aID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkAirportExists(Integer.parseInt(aID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Airport ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid arriving ID. Please re-enter valid arriving ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Departing date with format YYYY-MM-DD: ");
+				dDate = input.next();
+				if(!isValid(dDate))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid date. PLease re-enter the date.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		//talk to Mark case in US flight
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Arriving date with format YYYY-MM-DD: ");
+				aDate = input.next();
+				if(!isValid(aDate))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid date. PLease re-enter the date.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		AirportJDBC.insertFlight(Integer.parseInt(pID), Integer.parseInt(dID), Integer.parseInt(aID), dDate, aDate);
+		System.out.println("The entry was successful.\n");
+	}
+	
+	public static void editFlight()
+	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String fID = null, pID = null, dID = null, aID = null, dDate = null, aDate = null;
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter flight ID: ");
+				fID = input.next();
+				if(!fID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkFlightExists(Integer.parseInt(fID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Flight ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid flight ID. Please re-enter valid flight ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter plane ID: ");
+				pID = input.next();
+				if(!pID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkPlaneExists(Integer.parseInt(pID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Plane ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid plane ID. Please re-enter valid plane ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Departing airport ID: ");
+				dID = input.next();
+				if(!dID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkAirportExists(Integer.parseInt(dID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Airport ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid departing ID. Please re-enter valid departing ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		//need to handle if same day 
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Arriving airport ID: ");
+				aID = input.next();
+				if(!aID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkAirportExists(Integer.parseInt(aID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Airport ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid arriving ID. Please re-enter valid arriving ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Departing date with format YYYY-MM-DD: ");
+				dDate = input.next();
+				if(!isValid(dDate))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid date. PLease re-enter the date.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		//talk to Mark case in US flight
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Arriving date with format YYYY-MM-DD: ");
+				aDate = input.next();
+				if(!isValid(aDate))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid date. PLease re-enter the date.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		AirportJDBC.insertFlight(Integer.parseInt(pID), Integer.parseInt(dID), Integer.parseInt(aID), dDate, aDate);
+		System.out.println("The entry was successful.\n");
+	}
+
 	public static void deleteFlight()
 	{
 		boolean userInput;
