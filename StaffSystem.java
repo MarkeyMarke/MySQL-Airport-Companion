@@ -2,6 +2,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.javatuples.Quartet;
+
 public class StaffSystem {
 		
 	public static void main (String[] args)
@@ -455,6 +457,7 @@ public class StaffSystem {
 			
 		case 8: 
 				cancelFlight();
+				System.out.println("\n");
 				break;
 				
 		case 9:
@@ -466,7 +469,7 @@ public class StaffSystem {
 				break;
 				
 		case 11:
-			
+				viewListofAirportLocations();
 				break;
 			
 		case 12:
@@ -671,5 +674,15 @@ public class StaffSystem {
 		
 		AirportJDBC.archiveFlights(date);
 		System.out.println("Archiving was a success\n");
+	}
+	
+	public static void viewListofAirportLocations()
+	{
+		ArrayList<Quartet<String,String,String,String>> airports = AirportJDBC.viewAirportLocations();
+		for(Quartet<String, String, String, String> print : airports)
+		{
+			System.out.println("Airport: " + print.getValue0() +  "Name: " + print.getValue1() + 
+								"City: " + print.getValue2() + "Country: " + print.getValue3());
+		}
 	}
 }
