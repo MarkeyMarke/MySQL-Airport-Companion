@@ -477,11 +477,11 @@ public class StaffSystem {
 				break;
 			
 		case 13:
-			
+				viewAllFlightsFromAParticularAirline();
 				break;
 			
 		case 14:
-			
+				viewAllCurrentlyActiveAirlines();
 				break;
 			
 		case 15:
@@ -757,4 +757,56 @@ public class StaffSystem {
 				}
 		    }
 	}
+	
+	public static void viewAllFlightsFromAParticularAirline()
+	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String airline = null;
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter airline name: ");
+				airline = input.nextLine();
+				if(!airline.matches("[a-zA-Z_]+"))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid airline name. Please re-enter airline name.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		ArrayList<Septet<String,String,String,String,String,String,String>> flights = AirportJDBC.viewAllFlightFromAirline(airline);
+		if(isEmpty(flights))
+		{
+		    System.out.println("There is no flights from that airline yet.\n");
+		}
+		else 
+		{
+		    for(Septet<String, String, String, String, String, String, String> print : flights)
+			{
+				System.out.println("FlightID: " + print.getValue0() +  "PlaneID: " + print.getValue1() + 
+									"From: " + print.getValue2() +"To: " + print.getValue3() + 
+									"Departure: " + print.getValue4() + "Arrival: " + print.getValue5() + 
+									"Total Passengers: " + print.getValue6());
+			}
+		    System.out.println("\n");
+		}	
+	}
+	
+	public static void viewAllCurrentlyActiveAirlines()
+	{
+		ArrayList<String> airlines = AirportJDBC.viewAllAirlines();
+		System.out.println("All Currently Active Airlines");
+		for(int i = 0; i<airlines.size(); i++)
+		{
+			System.out.println((i+1)+ ". " + airlines.get(i));
+		}
+	}
+	
 }
