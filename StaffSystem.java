@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.javatuples.Quartet;
+import org.javatuples.Septet;
 
 public class StaffSystem {
 		
@@ -457,11 +458,10 @@ public class StaffSystem {
 			
 		case 8: 
 				cancelFlight();
-				System.out.println("\n");
 				break;
 				
 		case 9:
-				
+				viewAllFlightsStartingFromAParticularDay();
 				break;
 				
 		case 10:
@@ -507,17 +507,28 @@ public class StaffSystem {
 		{
 		    return true;
 		}
-		else {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		sdf.setLenient(false);
-		
-		try {	
-		Date d = sdf.parse(date);	
-		} catch (ParseException e) {
+		else 
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setLenient(false);
+			
+			try 
+			{	
+				Date d = sdf.parse(date);	
+			} 
+			catch (ParseException e) 
+			{
+				return false;
+			}
+			return true;
+		} 
+	}
+	
+	public static boolean isEmpty(ArrayList list)
+	{
+		if(list.size()==0)
+			return true;
 		return false;
-		}
-		return true;
-	} 
 	}
 
 	public static void bookFlight()
@@ -646,6 +657,48 @@ public class StaffSystem {
 		while(!userInput);
 		
 		System.out.println("Flight successflly unbooked\n");
+	}
+	
+	public static void viewAllFlightsStartingFromAParticularDay()
+	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String date = null;
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter date with format YYYY-MM-DD: ");
+				date = input.next();
+				if(!isValid(date))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid date. PLease re-enter the date.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		ArrayList<Septet<String,String,String,String,String,String,String>> flights = AirportJDBC.viewAllFlightsFromDay(date);
+	    if(isEmpty(flights))
+	    {
+	    	System.out.println("There is no flights from that day onwards yet.\n");
+	    }
+	    else 
+	    {
+	    	for(Septet<String, String, String, String, String, String, String> print : flights)
+			{
+				System.out.println("FlightID: " + print.getValue0() +  "Plane: " + print.getValue1() + 
+								   "From: " + print.getValue2() +"To: " + print.getValue3() + 
+								   "Departure: " + print.getValue4() + "Arrival: " + print.getValue5() + 
+								   "Total Passenger: " + print.getValue6());
+			}
+	    }
+		System.out.println("\n");
 	}
 	
 	public static void archiveFlights()
