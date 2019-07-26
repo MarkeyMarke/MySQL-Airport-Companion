@@ -485,7 +485,7 @@ public class StaffSystem {
 				break;
 			
 		case 15:
-			
+				viewThePassengersOfACertainFlight();
 				break;
 			
 		case 16:
@@ -809,4 +809,53 @@ public class StaffSystem {
 		}
 	}
 	
+	public static void viewThePassengersOfACertainFlight()
+	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String fID = null;
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter flight ID: ");
+				fID = input.next();
+				if(!fID.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkFlightExists(Integer.parseInt(fID)))	
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Flight ID doesn't exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception ee)
+			{
+				System.out.println("Invalid flight ID. Please re-enter valid flight ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		ArrayList<Septet<String,String,String,String,String,String,String>> customers = AirportJDBC.viewAllCustomersInFlight(Integer.parseInt(fID));
+		if(isEmpty(customers))
+		{
+		    System.out.println("There were no passengers on that flight.\n");
+		}
+		else 
+		{
+		    for(Septet<String, String, String, String, String, String, String> print : customers)
+			{
+				System.out.println("ID: " + print.getValue0() +  "Name: " + print.getValue1() + " " + print.getValue2() +
+									"Age: " + print.getValue3() + "Phone: " + print.getValue4() + "Email: " + print.getValue5() + 
+									"Seat No.: " + print.getValue6());
+			}
+		    System.out.println("\n");
+		}	
+	}
 }
