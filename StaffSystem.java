@@ -51,58 +51,15 @@ public class StaffSystem
 				break;
 				
 		case 3:
-			
-			do {
-				correctInput = true;
-				try {
-						System.out.println("Enter first name: ");
-						fName = input.next();
-						if(!fName.matches("[a-zA-Z_]+"))
-							throw new Exception();
-					}
-					catch(Exception e)
-					{
-						System.out.println("Invalid first name. Please re-enter first name.");
-						correctInput = false;
-					}
-			} while(!correctInput);
-			
-			do {
-				correctInput = true;
-				try {
-					System.out.println("Enter last name: ");
-					lName = input.next();
-					if(!lName.matches("[a-zA-Z_]+"))
-						throw new Exception();
-				}
-				catch(Exception e)
-				{
-					System.out.println("Invalid last name. Please re-enter last name.");
-					correctInput = false;
-				}
-			} while(!correctInput);
-			
-			//Testing purpose
-			ArrayList<Customer> matchingCustomers = AirportJDBC.selectPersons(fName,lName);
-			if(matchingCustomers == null || matchingCustomers.isEmpty())
-			{
-				System.out.println("Cannot find the contact.\n");
-			}
-			else
-			{
-				for(Customer c: matchingCustomers) {
-					System.out.println("[ID: " + c.getContactId() + ", Age: " + c.getAge() + ", Phone: " + c.getPhone() + ", Email: " + c.getEmail() + "]");
-				}
-			}
-
-			break;
+				findCustomerByName();
+				break;
 		
 		case 4: 
-				
+				addFlight();
 				break;
 				
 		case 5:	
-				
+				editFlight();
 				break;	
 		
 		case 6:
@@ -422,7 +379,57 @@ public class StaffSystem
 	
 	public static void findCustomerByName()
 	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String fName = "", lName = "";
 		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter first name: ");
+				fName += input.nextLine();
+				if(!fName.matches("^[\\p{L} .'-]+$"))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid first name. Please re-enter first name.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter last name: ");
+				lName += input.nextLine();
+				if(!lName.matches("^[\\p{L} .'-]+$"))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid last name. Please re-enter last name.");
+				userInput = false;
+			}
+		} while(!userInput);
+		
+		ArrayList<Customer> matchingCustomers = AirportJDBC.selectPersons(fName,lName);
+		if(matchingCustomers == null || matchingCustomers.isEmpty())
+		{
+			System.out.println("Cannot find the contact.\n");
+		}
+		else
+		{
+			for(Customer c: matchingCustomers) 
+			{
+				System.out.println("[ID: " + c.getContactId() + ", Age: " + c.getAge() + ", Phone: " + c.getPhone() + ", Email: " + c.getEmail() + "]");
+			}
+		}
 	}
 	
 	public static void addFlight()
