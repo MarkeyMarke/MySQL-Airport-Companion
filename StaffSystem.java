@@ -6,8 +6,7 @@ import org.javatuples.Quartet;
 import org.javatuples.Septet;
 
 public class StaffSystem 
-{
-		
+{	
 	public static void main (String[] args)
 	{
 		Scanner input = new Scanner(System.in);
@@ -35,10 +34,6 @@ public class StaffSystem
 			"[17] Exit application");
 			
 			int choice = input.nextInt();
-
-		String fName = null, lName = null, age = null, pNumber = null, email = null, phone = null;
-		String contactId = null;
-		boolean correctInput;
 		
 		switch(choice)
 		{
@@ -147,8 +142,8 @@ public class StaffSystem
 	
 	public static void addCustomer()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String fName = "", lName = "", age = null, phone = null, email = null;
 		
 		do 
@@ -250,8 +245,8 @@ public class StaffSystem
 	
 	public static void editCustomerInformation()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String contactId = null, fName = "", lName = "", age = null, phone = null, email = null; 
 		
 		do 
@@ -379,8 +374,8 @@ public class StaffSystem
 	
 	public static void findCustomerByName()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String fName = "", lName = "";
 		
 		do 
@@ -434,8 +429,8 @@ public class StaffSystem
 	
 	public static void addFlight()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String pID = null, dID = null, aID = null, dDate = null, aDate = null;
 		
 		do 
@@ -566,8 +561,8 @@ public class StaffSystem
 	
 	public static void editFlight()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String fID = null, pID = null, dID = null, aID = null, dDate = null, aDate = null;
 		
 		do 
@@ -726,8 +721,8 @@ public class StaffSystem
 
 	public static void deleteFlight()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String fID = null;
 		do 
 		{
@@ -762,15 +757,16 @@ public class StaffSystem
 
 	public static void bookFlight()
 	{
-		boolean userInput = true;
 		Scanner input = new Scanner(System.in);
+		boolean userInput = true;
+		String fID = null, pID = null, seatNo = null;
 		
 		do 
 		{
 			try 
 			{
 				System.out.println("Enter flight ID: ");
-				String fID = input.next();
+				fID = input.next();
 				if(!fID.matches("[0-9_]+"))
 					throw new Exception();
 				try 
@@ -798,7 +794,7 @@ public class StaffSystem
 			try 
 			{
 				System.out.println("Enter person ID: ");
-				String pID = input.next();
+				pID = input.next();
 				if(!pID.matches("[0-9_]+"))
 					throw new Exception();
 				try 
@@ -819,14 +815,55 @@ public class StaffSystem
 			}
 		} 
 		while(!userInput);
-		input.close();
-		//NOT DONE
+
+		do 
+		{	
+			userInput = true;
+			char ch;
+			boolean check = false;
+			try 
+			{
+				System.out.println("Enter seat number: ");
+				seatNo = input.next();
+				
+				if(seatNo.length()==2)
+				{
+					ch = seatNo.charAt(0);
+					if((ch>='a' && ch<='z') || (ch>='A' && ch>='Z'))
+					{
+						ch = seatNo.charAt(1);
+						if(ch>='0' && ch<='9')
+						{
+							check = true;
+						}
+					}
+				}
+				
+				if(!check)
+					throw new Exception();
+				
+				else if(AirportJDBC.checkIfFlightIsFull(Integer.parseInt(fID)))
+					System.out.println("There is no more seat.");
+						
+				else if(AirportJDBC.checkIfSeatTaken(Integer.parseInt(fID), seatNo))
+					System.out.println("The seat is takens.");
+						
+				else 
+					System.out.println("Flight successfully booked.\n");
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid seat number. Please re-enter valid seat number.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
 	}
 	
 	public static void cancelFlight()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		
 		do 
 		{
@@ -889,8 +926,8 @@ public class StaffSystem
 	
 	public static void viewAllFlightsStartingFromAParticularDay()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String date = null;
 		
 		do 
@@ -931,8 +968,8 @@ public class StaffSystem
 	
 	public static void archiveFlights()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String date = null;
 		
 		do 
@@ -988,8 +1025,8 @@ public class StaffSystem
 	
 	public static void viewAllFlightsFromAParticularAirline()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String airline = null;
 		
 		do 
@@ -1040,8 +1077,8 @@ public class StaffSystem
 	
 	public static void viewThePassengersOfACertainFlight()
 	{
-		boolean userInput;
 		Scanner input = new Scanner(System.in);
+		boolean userInput;
 		String fID = null;
 		do 
 		{
