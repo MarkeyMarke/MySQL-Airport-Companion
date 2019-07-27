@@ -795,7 +795,6 @@ public class StaffSystem
 		do 
 		{
 			userInput = true;
-			
 			try 
 			{
 				System.out.println("Enter person ID: ");
@@ -992,14 +991,15 @@ public class StaffSystem
 		boolean userInput;
 		Scanner input = new Scanner(System.in);
 		String airline = null;
+		
 		do 
 		{
 			userInput = true;
 			try 
 			{
 				System.out.println("Enter airline name: ");
-				airline = input.nextLine();
-				if(!airline.matches("[a-zA-Z_]+"))
+				airline += input.nextLine();
+				if(!airline.matches("^[\\p{L} .'-]+$"))
 					throw new Exception();
 			}
 			catch(Exception e)
