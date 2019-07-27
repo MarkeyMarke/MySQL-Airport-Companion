@@ -43,88 +43,8 @@ public class StaffSystem
 		switch(choice)
 		{
 		case 1: 
-		do {
-			correctInput = true;
-			try {
-					System.out.println("Enter first name: ");
-					fName = input.next();
-					if(!fName.matches("[a-zA-Z_]+"))
-						throw new Exception();
-				}
-				catch(Exception e)
-				{
-					System.out.println("Invalid first name. Please re-enter first name.");
-					correctInput = false;
-				}
-		} while(!correctInput);
-		
-		do {
-			correctInput = true;
-			try {
-				System.out.println("Enter last name: ");
-				lName = input.next();
-				if(!lName.matches("[a-zA-Z_]+"))
-					throw new Exception();
-			}
-			catch(Exception e)
-			{
-				System.out.println("Invalid last name. Please re-enter last name.");
-				correctInput = false;
-			}
-		} while(!correctInput);
-				
-		do	{
-			correctInput = true;
-			try {
-				System.out.println("Enter age: ");
-				age = input.next();
-				if(!age.matches("[0-9_]+"))
-					throw new Exception();
-			}
-			catch(Exception e)
-			{
-				System.out.println("Invalid age. Please re-enter an integer.");
-				correctInput = false;
-			}
-		} while(!correctInput);
-		
-		do {
-			correctInput = true;
-			try {
-				System.out.println("Enter phone number: ");
-				pNumber = input.next();
-				if(!pNumber.matches("[0-9_]+"))
-					throw new Exception();
-				else
-					phone = pNumber.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
-			}
-			catch(Exception e)
-			{
-				System.out.println("Invalid phone number. Please re-enter phone number.");
-				correctInput = false;
-			}
-		} while(!correctInput);
-				
-		do {
-			correctInput = true;
-			try {
-				System.out.println("Enter email: ");
-				email = input.next();
-				if(!email.matches( "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"))
-					throw new Exception();
-			}
-			catch(Exception e)
-			{
-				System.out.println("Invalid email. Please re-enter email");
-				correctInput = false;
-			}
-		} while(!correctInput);
-
-		AirportJDBC.insertPerson(fName,lName,Integer.parseInt(age),phone,email);
-		System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
-		+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
-				
-		break;
+				addCustomer();
+				break;
 		
 		case 2:
 			do {
@@ -375,7 +295,105 @@ public class StaffSystem
 	
 	public static void addCustomer()
 	{
+		boolean userInput;
+		Scanner input = new Scanner(System.in);
+		String fName = "", lName = "", age = null, phone = null, email = null;
 		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter first name: ");
+				fName += input.nextLine();
+				if(!fName.matches("^[\\p{L} .'-]+$"))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid first name. Please re-enter first name.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter last name: ");
+				lName += input.nextLine();
+				if(!lName.matches("^[\\p{L} .'-]+$"))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid last name. Please re-enter last name.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+				
+		do	
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter age: ");
+				age = input.next();
+				if(!age.matches("[0-9_]+"))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid age. Please re-enter an integer.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter phone number: ");
+				phone = input.next();
+				if(!phone.matches("[0-9_]+"))
+					throw new Exception();
+				else
+					phone = phone.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid phone number. Please re-enter phone number.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+				
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter email: ");
+				email = input.next();
+				if(!email.matches( "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"))
+					throw new Exception();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid email. Please re-enter email");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
+
+		AirportJDBC.insertPerson(fName,lName,Integer.parseInt(age),phone,email);
+		System.out.println("Contact [" + fName + ", " + lName + "] successfully stored with Age: [" 
+		+ age + "], Phone: [" + phone + "], Email: [" + email + "]\n");
 	}
 	
 	public static void editCustomerInformation()
