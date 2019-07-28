@@ -35,83 +35,82 @@ public class StaffSystem
 			
 			int choice = input.nextInt();
 		
-		switch(choice)
-		{
-		case 1: 
-				addCustomer();
-				break;
-		
-		case 2:
-				editCustomerInformation();
-				break;
+			switch(choice)
+			{
+				case 1: 
+						addCustomer();
+						break;
 				
-		case 3:
-				findCustomerByName();
-				break;
-		
-		case 4: 
-				addFlight();
-				break;
+				case 2:
+						editCustomerInformation();
+						break;
+						
+				case 3:
+						findCustomerByName();
+						break;
 				
-		case 5:	
-				editFlight();
-				break;	
-		
-		case 6:
-				deleteFlight();
-				break;
-		
-		case 7:
-				bookFlight();				
-				break;
-			
-		case 8: 
-				cancelFlight();
-				break;
+				case 4: 
+						addFlight();
+						break;
+						
+				case 5:	
+						editFlight();
+						break;	
 				
-		case 9:
-				viewAllFlightsStartingFromAParticularDay();
-				break;
+				case 6:
+						deleteFlight();
+						break;
 				
-		case 10:
-				archiveFlights();
-				break;
+				case 7:
+						bookFlight();				
+						break;
+					
+				case 8: 
+						cancelFlight();
+						break;
+						
+				case 9:
+						viewAllFlightsStartingFromAParticularDay();
+						break;
+						
+				case 10:
+						archiveFlights();
+						break;
+						
+				case 11:
+						viewListofAirportLocations();
+						break;
+					
+				case 12:
+						viewAllFlightsAvailableStartingTodayWithSeats();
+						break;
+					
+				case 13:
+						viewAllFlightsFromAParticularAirline();
+						break;
+					
+				case 14:
+						viewAllCurrentlyActiveAirlines();
+						break;
+					
+				case 15:
+						viewThePassengersOfACertainFlight();
+						break;
+					
+				case 16:
+						viewAllPlanesAndTheirSpecs();
+						break;
 				
-		case 11:
-				viewListofAirportLocations();
-				break;
-			
-		case 12:
-				viewAllFlightsAvailableStartingTodayWithSeats();
-				break;
-			
-		case 13:
-				viewAllFlightsFromAParticularAirline();
-				break;
-			
-		case 14:
-				viewAllCurrentlyActiveAirlines();
-				break;
-			
-		case 15:
-				viewThePassengersOfACertainFlight();
-				break;
-			
-		case 16:
-				viewAllPlanesAndTheirSpecs();
-				break;
-		
-		case 17: 
-				System.out.println("Exiting Application...");
-				System.exit(0);
-				break;
-		}	
+				case 17: 
+						System.out.println("Exit");
+						System.exit(0);
+						break;
+			}	
 		}
 	}
 	
 	private static boolean isValid(String date)
 	{
-		
 		if (date.trim().equals(""))
 		{
 		    return true;
@@ -123,7 +122,7 @@ public class StaffSystem
 			
 			try 
 			{	
-				Date d = sdf.parse(date);	
+				sdf.parse(date);	
 			} 
 			catch (ParseException e) 
 			{
@@ -131,6 +130,19 @@ public class StaffSystem
 			}
 			return true;
 		} 
+	}
+	
+	private static boolean isBefore(String dDate, String aDate) throws ParseException
+	{
+			SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd");
+			sdfD.setLenient(false);
+			SimpleDateFormat sdfA = new SimpleDateFormat("yyyy-MM-dd");
+			sdfA.setLenient(false);
+			
+			if(sdfA.parse(aDate).before(sdfD.parse(dDate)))
+				return true;
+			else
+				return false;
 	}
 	
 	public static boolean isEmpty(ArrayList list)
@@ -254,34 +266,6 @@ public class StaffSystem
 			userInput = true;
 			try 
 			{
-				System.out.println("Enter Contact ID: ");
-				contactId = input.next();
-				if(!contactId.matches("[0-9_]+"))
-					throw new Exception();
-				try 
-				{
-					if(!AirportJDBC.checkCustomerExists(Integer.parseInt(contactId)))
-						throw new Exception();
-				}
-				catch(Exception e)
-				{
-					System.out.println("ID does not exist.");
-					userInput = false;
-				}
-			}
-			catch(Exception e)
-			{
-				System.out.println("Invalid Contact ID. Please re-enter valid Contact ID.");
-				userInput = false;
-			}
-		} 
-		while(!userInput);
-		
-		do 
-		{
-			userInput = true;
-			try 
-			{
 				System.out.println("Enter new first name: ");
 				fName += input.nextLine();
 				if(!fName.matches("^[\\p{L} .'-]+$"))
@@ -310,7 +294,36 @@ public class StaffSystem
 				System.out.println("Invalid new last name. Please re-enter new last name.");
 				userInput = false;
 			}
-		} while(!userInput);
+		} 
+		while(!userInput);
+		
+		do 
+		{
+			userInput = true;
+			try 
+			{
+				System.out.println("Enter Contact ID: ");
+				contactId = input.next();
+				if(!contactId.matches("[0-9_]+"))
+					throw new Exception();
+				try 
+				{
+					if(!AirportJDBC.checkCustomerExists(Integer.parseInt(contactId)))
+						throw new Exception();
+				}
+				catch(Exception e)
+				{
+					System.out.println("ID does not exist.");
+					userInput = false;
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("Invalid Contact ID. Please re-enter valid Contact ID.");
+				userInput = false;
+			}
+		} 
+		while(!userInput);
 				
 		do	
 		{
@@ -460,7 +473,7 @@ public class StaffSystem
 			}
 		} 
 		while(!userInput);
-		
+	
 		do 
 		{
 			userInput = true;
@@ -488,10 +501,9 @@ public class StaffSystem
 			}
 		} 
 		while(!userInput);
-		
-		//need to handle if same day 
+		 
 		do 
-		{
+		{	
 			userInput = true;
 			try 
 			{
@@ -499,15 +511,32 @@ public class StaffSystem
 				aID = input.next();
 				if(!aID.matches("[0-9_]+"))
 					throw new Exception();
+				int i = 0;
 				try 
 				{
-					if(!AirportJDBC.checkAirportExists(Integer.parseInt(aID)))	
+					if(!AirportJDBC.checkAirportExists(Integer.parseInt(aID)))
+					{
+						i = 1;
 						throw new Exception();
+					}
+					else if(aID.equals(dID))
+					{
+						i = 2;
+						throw new Exception();
+					}
 				}
 				catch(Exception e)
 				{
-					System.out.println("Airport ID doesn't exist.");
-					userInput = false;
+					if(i == 1)
+					{
+						System.out.println("Airport ID doesn't exist.");
+						userInput = false;
+					}
+					else if(i == 2)
+					{
+						System.out.println("Departing airport and Arriving airport cannot be the same.");
+						userInput = false;
+					} 
 				}
 			}
 			catch(Exception e)
@@ -536,21 +565,37 @@ public class StaffSystem
 		} 
 		while(!userInput);
 		
-		//talk to Mark case in US flight
 		do 
 		{
 			userInput = true;
+			int i = 0;
 			try 
 			{
 				System.out.println("Enter Arriving date with format YYYY-MM-DD: ");
 				aDate = input.next();
 				if(!isValid(aDate))
+				{
+					i = 1;
 					throw new Exception();
+				}
+				else if(isBefore(dDate, aDate))
+				{
+					i = 2;
+					throw new Exception();
+				}		
 			}
 			catch(Exception e)
 			{
-				System.out.println("Invalid date. PLease re-enter the date.");
-				userInput = false;
+				if(i==1)
+				{
+					System.out.println("Invalid date. PLease re-enter the date.");
+					userInput = false;
+				}
+				else if(i==2)
+				{
+					System.out.println("Arriving date cannot be before departing date.");
+					userInput = false;
+				}
 			}
 		} 
 		while(!userInput);
@@ -649,9 +694,8 @@ public class StaffSystem
 		} 
 		while(!userInput);
 		
-		//need to handle if same day 
 		do 
-		{
+		{	
 			userInput = true;
 			try 
 			{
@@ -659,15 +703,32 @@ public class StaffSystem
 				aID = input.next();
 				if(!aID.matches("[0-9_]+"))
 					throw new Exception();
+				int i = 0;
 				try 
 				{
-					if(!AirportJDBC.checkAirportExists(Integer.parseInt(aID)))	
+					if(!AirportJDBC.checkAirportExists(Integer.parseInt(aID)))
+					{
+						i = 1;
 						throw new Exception();
+					}
+					else if(aID.equals(dID))
+					{
+						i = 2;
+						throw new Exception();
+					}
 				}
 				catch(Exception e)
 				{
-					System.out.println("Airport ID doesn't exist.");
-					userInput = false;
+					if(i == 1)
+					{
+						System.out.println("Airport ID doesn't exist.");
+						userInput = false;
+					}
+					else if(i == 2)
+					{
+						System.out.println("Departing airport and Arriving airport cannot be the same.");
+						userInput = false;
+					} 
 				}
 			}
 			catch(Exception e)
@@ -696,21 +757,37 @@ public class StaffSystem
 		} 
 		while(!userInput);
 		
-		//talk to Mark case in US flight
 		do 
 		{
 			userInput = true;
+			int i = 0;
 			try 
 			{
 				System.out.println("Enter Arriving date with format YYYY-MM-DD: ");
 				aDate = input.next();
 				if(!isValid(aDate))
+				{
+					i = 1;
 					throw new Exception();
+				}
+				else if(isBefore(dDate, aDate))
+				{
+					i = 2;
+					throw new Exception();
+				}		
 			}
 			catch(Exception e)
 			{
-				System.out.println("Invalid date. PLease re-enter the date.");
-				userInput = false;
+				if(i==1)
+				{
+					System.out.println("Invalid date. PLease re-enter the date.");
+					userInput = false;
+				}
+				else if(i==2)
+				{
+					System.out.println("Arriving date cannot be before departing date.");
+					userInput = false;
+				}
 			}
 		} 
 		while(!userInput);
@@ -829,7 +906,7 @@ public class StaffSystem
 				if(seatNo.length()==2)
 				{
 					ch = seatNo.charAt(0);
-					if((ch>='a' && ch<='z') || (ch>='A' && ch>='Z'))
+					if((ch>='a' && ch<='z') || (ch>='A' && ch<='Z'))
 					{
 						ch = seatNo.charAt(1);
 						if(ch>='0' && ch<='9')
@@ -957,13 +1034,12 @@ public class StaffSystem
 	    {
 	    	for(Septet<String, String, String, String, String, String, String> print : flights)
 			{
-				System.out.println("FlightID: " + print.getValue0() +  "Plane: " + print.getValue1() + 
-								   "From: " + print.getValue2() +"To: " + print.getValue3() + 
-								   "Departure: " + print.getValue4() + "Arrival: " + print.getValue5() + 
-								   "Total Passenger: " + print.getValue6());
+				System.out.println("FlightID: [" + print.getValue0() +  "] Plane: [" + print.getValue1() + 
+								   "] From: [" + print.getValue2() + "] To: [" + print.getValue3() + 
+								   "] Departure: [" + print.getValue4() + "] Arrival: [" + print.getValue5() + 
+								   "] Total Passenger: [" + print.getValue6() + "]");
 			}
 	    }
-		System.out.println("\n");
 	}
 	
 	public static void archiveFlights()
@@ -999,9 +1075,10 @@ public class StaffSystem
 		ArrayList<Quartet<String,String,String,String>> airports = AirportJDBC.viewAirportLocations();
 		for(Quartet<String, String, String, String> print : airports)
 		{
-			System.out.println("Airport: " + print.getValue0() +  "Name: " + print.getValue1() + 
-								"City: " + print.getValue2() + "Country: " + print.getValue3());
+			System.out.println("Airport: [" + print.getValue0() +  "] Name: [" + print.getValue1() + 
+								"] City: [" + print.getValue2() + "] Country: [" + print.getValue3() + "]");
 		}
+		System.out.println("\n");
 	}
 	
 	public static void viewAllFlightsAvailableStartingTodayWithSeats()
@@ -1015,10 +1092,10 @@ public class StaffSystem
 		    {
 		    	for(Septet<String, String, String, String, String, String, String> print : flights)
 				{
-					System.out.println("FlightID: " + print.getValue0() +  "PlaneID: " + print.getValue1() + 
-									   "From: " + print.getValue2() +"To: " + print.getValue3() + 
-									   "Departure: " + print.getValue4() + "Arrival: " + print.getValue5() + 
-									   "Remaining Seats: " + print.getValue6());
+					System.out.println("FlightID: [" + print.getValue0() +  "] PlaneID: [" + print.getValue1() + 
+									   "] From: [" + print.getValue2() +"] To: [" + print.getValue3() + 
+									   "] Departure: [" + print.getValue4() + "] Arrival: [" + print.getValue5() + 
+									   "] Remaining Seats: [" + print.getValue6() + "]");
 				}
 		    }
 	}
@@ -1056,10 +1133,10 @@ public class StaffSystem
 		{
 		    for(Septet<String, String, String, String, String, String, String> print : flights)
 			{
-				System.out.println("FlightID: " + print.getValue0() +  "PlaneID: " + print.getValue1() + 
-									"From: " + print.getValue2() +"To: " + print.getValue3() + 
-									"Departure: " + print.getValue4() + "Arrival: " + print.getValue5() + 
-									"Total Passengers: " + print.getValue6());
+				System.out.println("FlightID: [" + print.getValue0() +  "] PlaneID: [" + print.getValue1() + 
+									"] From: [" + print.getValue2() +"] To: [" + print.getValue3() + 
+									"] Departure: [" + print.getValue4() + "] Arrival: [" + print.getValue5() + 
+									"] Total Passengers: [" + print.getValue6() + "]");
 			}
 		    System.out.println("\n");
 		}	
@@ -1073,6 +1150,7 @@ public class StaffSystem
 		{
 			System.out.println((i+1)+ ". " + airlines.get(i));
 		}
+		System.out.print("\n");
 	}
 	
 	public static void viewThePassengersOfACertainFlight()
@@ -1117,9 +1195,9 @@ public class StaffSystem
 		{
 		    for(Septet<String, String, String, String, String, String, String> print : customers)
 			{
-				System.out.println("ID: " + print.getValue0() +  "Name: " + print.getValue1() + " " + print.getValue2() +
-									"Age: " + print.getValue3() + "Phone: " + print.getValue4() + "Email: " + print.getValue5() + 
-									"Seat No.: " + print.getValue6());
+				System.out.println("ID: [" + print.getValue0() +  "] Name: [" + print.getValue1() + " " + print.getValue2() +
+									"] Age: [" + print.getValue3() + "] Phone: [" + print.getValue4() + "] Email: [" + print.getValue5() + 
+									"] Seat No.[: " + print.getValue6() + "]");
 			}
 		    System.out.println("\n");
 		}	
@@ -1130,8 +1208,9 @@ public class StaffSystem
 		ArrayList<Quartet<String,String,String,String>> planes = AirportJDBC.viewAllPlanes();
 		for(Quartet<String, String, String, String> print : planes)
 		{
-			System.out.println("PlaneID: " + print.getValue0() +  " Model: " + print.getValue1() + 
-							   " Airline: " + print.getValue2() +" Capacity: " + print.getValue3());
+			System.out.println("PlaneID: [" + print.getValue0() +  "] Model: [" + print.getValue1() + 
+							   "] Airline: [" + print.getValue2() + "] Capacity: [" + print.getValue3() + "]");
 		}
+		System.out.print("\n");
 	}
 }
