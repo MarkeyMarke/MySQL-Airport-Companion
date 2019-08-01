@@ -828,7 +828,7 @@ public class StaffSystem
 			}
 		} 
 		while(!userInput);
-		
+		AirportJDBC.deleteFlight(Integer.parseInt(fID));
 		System.out.println("Delete was successful.\n");
 	}
 
