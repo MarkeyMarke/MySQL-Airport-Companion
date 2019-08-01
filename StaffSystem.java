@@ -1107,7 +1107,7 @@ public class StaffSystem
 	{
 		Scanner input = new Scanner(System.in);
 		boolean userInput;
-		String airline = null;
+		String airline = "";
 		
 		do 
 		{
@@ -1126,7 +1126,7 @@ public class StaffSystem
 			}
 		} 
 		while(!userInput);
-		
+		System.out.println("Here are the flights from " + airline);
 		ArrayList<Septet<String,String,String,String,String,String,String>> flights = AirportJDBC.viewAllFlightFromAirline(airline);
 		if(isEmpty(flights))
 		{
