@@ -792,7 +792,7 @@ public class StaffSystem
 		} 
 		while(!userInput);
 		
-		AirportJDBC.insertFlight(Integer.parseInt(pID), Integer.parseInt(dID), Integer.parseInt(aID), dDate, aDate);
+		AirportJDBC.updateFlight(Integer.parseInt(fID), Integer.parseInt(pID), Integer.parseInt(dID), Integer.parseInt(aID), dDate, aDate);
 		System.out.println("The entry was successful.\n");
 	}
 
