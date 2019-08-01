@@ -935,20 +935,23 @@ public class StaffSystem
 			}
 		} 
 		while(!userInput);
+		AirportJDBC.bookFlight(Integer.parseInt(fID),Integer.parseInt(pID),seatNo);
+		System.out.println("Flight booked!");
 	}
 	
 	public static void cancelFlight()
 	{
 		Scanner input = new Scanner(System.in);
 		boolean userInput;
-		
+		String fID = "";
+		String pID = "";
 		do 
 		{
 			userInput = true;
 			try 
 			{
 				System.out.println("Enter flight ID: ");
-				String fID = input.next();
+				fID = input.next();
 				if(!fID.matches("[0-9_]+"))
 					throw new Exception();
 				try 
@@ -976,7 +979,7 @@ public class StaffSystem
 			try 
 			{
 				System.out.println("Enter person ID: ");
-				String pID = input.next();
+				pID = input.next();
 				if(!pID.matches("[0-9_]+"))
 					throw new Exception();
 				try 
@@ -997,7 +1000,7 @@ public class StaffSystem
 			}
 		} 
 		while(!userInput);
-		
+		AirportJDBC.cancelFlight(Integer.parseInt(fID),Integer.parseInt(pID));
 		System.out.println("Flight successflly unbooked\n");
 	}
 	
