@@ -9,8 +9,8 @@ public class AirportJDBC {
         Connection connection;
         try {
             String dbURL = "jdbc:mysql://localhost:3306/AIRLINE_RESERVATION?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT";
-            String jdbcUser = "testingUser";//"root";
-            String jdbcPass = "customPassword";//"KenneTH1997";
+            String jdbcUser = "testingUser";
+            String jdbcPass = "customPassword";
             connection = DriverManager.getConnection(dbURL, jdbcUser, jdbcPass);
 
         } catch (SQLException e) {
